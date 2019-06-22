@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(27)
+    compileSdkVersion(28)
     defaultConfig {
         applicationId = "com.gromyk.lastfmaf"
         minSdkVersion(21)
-        targetSdkVersion(27)
+        targetSdkVersion(28)
         versionCode = 1
         versionName = "1.0"
 
@@ -35,14 +35,20 @@ dependencies {
     val lifeCycleVersion = "1.1.1"
     val koinVersion = "2.0.1"
     val timberVersion = "4.7.1"
+    val picassoVersion = "2.71828"
+
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     api(project(":api"))
 
+    // ui
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:1.0.2")
     implementation("androidx.core:core-ktx:1.0.2")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
+    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha06")
+    //Picasso for Image Loading
+    implementation("com.squareup.picasso:picasso:$picassoVersion")
 
     // viewModels
     implementation("android.arch.lifecycle:extensions:${lifeCycleVersion}")
