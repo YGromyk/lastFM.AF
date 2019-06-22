@@ -1,8 +1,7 @@
 package com.gromyk.api
 
-import com.gromyk.api.dtos.ArtistInfo
+import com.gromyk.api.dtos.artist.ArtistInfo
 import com.gromyk.api.dtos.ArtistSearchResponse
-import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 

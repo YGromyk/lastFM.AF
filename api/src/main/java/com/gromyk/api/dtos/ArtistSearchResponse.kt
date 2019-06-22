@@ -1,6 +1,7 @@
 package com.gromyk.api.dtos
 
 import com.google.gson.annotations.SerializedName
+import com.gromyk.api.dtos.artist.Artist
 
 data class ArtistSearchResponse(
     @SerializedName("results") var artistSearchResult: ArtistSearchResult

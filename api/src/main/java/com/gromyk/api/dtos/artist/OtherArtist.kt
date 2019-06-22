@@ -1,9 +1,12 @@
-package com.gromyk.api.dtos
+package com.gromyk.api.dtos.artist
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ArtistX(
+/**
+ * Represents other artist with few details
+ */
+data class OtherArtist(
     @SerializedName("image")
     var image: List<Image>,
     @SerializedName("name")

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(28)
+    compileSdkVersion(27)
     defaultConfig {
         applicationId = "com.gromyk.lastfmaf"
         minSdkVersion(21)
-        targetSdkVersion(28)
+        targetSdkVersion(27)
         versionCode = 1
         versionName = "1.0"
 
