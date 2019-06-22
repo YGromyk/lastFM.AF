@@ -55,6 +55,8 @@ dependencies {
 
     // coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-M1")
+    // coroutines callAdapter
+    implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
 
     // tests
     testImplementation( "junit:junit:4.12")

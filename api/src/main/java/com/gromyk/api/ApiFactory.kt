@@ -1,5 +1,6 @@
 package com.gromyk.api
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -7,12 +8,12 @@ import org.koin.core.KoinComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ApiFactory: KoinComponent {
-    // Creating Auth Interceptor to add api_key query in front of all the requests.
+object ApiFactory : KoinComponent {
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url()
             .newBuilder()
             .addEncodedQueryParameter("api_key", BuildConfig.API_KEY)
+            .addEncodedQueryParameter("format", "json")
             .build()
 
         val newRequest = chain.request()
@@ -26,7 +27,6 @@ object ApiFactory: KoinComponent {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    //OkHttpClient for building http request url
     private val lastFmClient =
         OkHttpClient()
             .newBuilder()
@@ -37,7 +37,7 @@ object ApiFactory: KoinComponent {
     fun retrofit(): Retrofit = Retrofit.Builder()
         .client(lastFmClient)
         .baseUrl(BaseUrl.BASE_REST_URL)
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
 }
