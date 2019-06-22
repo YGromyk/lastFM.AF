@@ -5,23 +5,23 @@ import com.google.gson.annotations.SerializedName
 
 data class Artist(
     @SerializedName("bio")
-    var bio: Bio,
+    var bio: Bio? = null,
     @SerializedName("image")
-    var image: List<Image>,
+    var image: List<Image>? = null,
     @SerializedName("mbid")
-    var mbid: String,
+    var mbid: String? = null,
     @SerializedName("name")
-    var name: String,
+    var name: String? = null,
     @SerializedName("ontour")
-    var ontour: String,
+    var ontour: String? = null,
     @SerializedName("similar")
-    var similar: Similar,
+    var similar: Similar? = null,
     @SerializedName("stats")
-    var stats: Stats,
+    var stats: Stats? = null,
     @SerializedName("streamable")
-    var streamable: String,
+    var streamable: String? = null,
     @SerializedName("tags")
-    var tags: Tags,
+    var tags: Tags? = null,
     @SerializedName("url")
-    var url: String
+    var url: String? = null
 )
