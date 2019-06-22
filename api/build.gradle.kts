@@ -35,7 +35,9 @@ android {
 dependencies {
     val timberVersion = "4.7.1"
     val gsonVersion = "2.8.5"
+    val koinVersion = "2.0.1"
     val retrofitConverterVersion = "2.6.0"
+
     implementation(fileTree(mapOf("dir" to "libs", "include" to  listOf("*.jar"))))
 
     // ui
@@ -49,14 +51,18 @@ dependencies {
     implementation( "com.squareup.retrofit2:converter-gson:$retrofitConverterVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:3.14.2")
 
-    // koin for di
-    // Koin for Android
-    implementation("org.koin:koin-android:2.0.1")
+    //koin di
+    implementation("org.koin:koin-core:$koinVersion")
+    implementation("org.koin:koin-core-ext:$koinVersion")
+    implementation("org.koin:koin-android:$koinVersion")
 
     // coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-M1")
     // coroutines callAdapter
     implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
+
+    // timber
+    implementation("com.jakewharton.timber:timber:$timberVersion")
 
     // tests
     testImplementation( "junit:junit:4.12")
