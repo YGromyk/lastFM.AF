@@ -27,6 +27,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+    androidExtensions {
+        isExperimental = true
+    }
 }
 
 dependencies {
@@ -44,6 +48,7 @@ dependencies {
     // ui
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation("com.android.support:design:28.0.0")
     implementation("androidx.core:core-ktx:1.0.2")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha06")
@@ -64,6 +69,7 @@ dependencies {
 
     // timber
     implementation("com.jakewharton.timber:timber:$timberVersion")
+
 
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test:runner:1.2.0")
