@@ -7,7 +7,7 @@ buildscript {
 
     }
     dependencies {
-        extra["kotlinVersion"] = "1.3.31"
+        extra["kotlinVersion"] = "1.3.40"
         classpath("com.android.tools.build:gradle:3.4.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${extra["kotlinVersion"]}")
         // NOTE: Do not place your application dependencies here; they belong
@@ -30,5 +30,5 @@ tasks {
 
 
 object LibrariesVersions {
-    const val kotlin = "1.3.31"
+    const val kotlin = "1.3.40"
 }

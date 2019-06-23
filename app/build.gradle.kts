@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    val kotlinVersion = "1.3.31"
+    val kotlinVersion = "1.3.40"
     val kotlinCoroutineVersion = "1.3.0-M1"
     val lifeCycleVersion = "1.1.1"
     val koinVersion = "2.0.1"
@@ -70,7 +70,7 @@ dependencies {
     // timber
     implementation("com.jakewharton.timber:timber:$timberVersion")
 
-
+    // tests
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test:runner:1.2.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
