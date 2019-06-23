@@ -5,10 +5,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gromyk.lastfmaf.R
+import com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment
+import com.gromyk.lastfmaf.presentation.navigation.Navigator
+import com.gromyk.lastfmaf.presentation.navigation.Screen
 import com.gromyk.lastfmaf.presentation.search.SearchFragment
 import com.gromyk.lastfmaf.presentation.topalbums.TopAlbumsFragment
 import com.gromyk.lastfmaf.presentation.topalbums.TopAlbumsViewModel
@@ -20,6 +24,11 @@ class MainActivity : AppCompatActivity(),
 
     lateinit var viewModel: TopAlbumsViewModel
 
+    val bundle = bundleOf(
+        FragmentParameters.ARTIST_KEY to "Eminem",
+        FragmentParameters.ALBUM_KEY to "Kamikaze"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,7 +37,7 @@ class MainActivity : AppCompatActivity(),
 //        viewModel.searchArtist("kendrick lamar")
 //        viewModel.fetchAlbumsInfo("Cher","Believe")
         initView()
-        startFragment(TopAlbumsFragment.newInstance(navigator = this))
+        startFragment(TopAlbumsFragment.newInstance(bundle, this))
     }
 
     private fun initView() {
@@ -55,10 +64,25 @@ class MainActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
+    override fun navigateTo(screen: Int, parameters: Bundle?) {
+        when (screen) {
+            Screen.ARTIST_DETAILS -> startFragment(TopAlbumsFragment.newInstance(parameters, this))
+            Screen.ALBUM_DETAILS -> startFragment(AlbumDetailsFragment.newInstance(parameters, this))
+            Screen.OPEN_WEB -> {
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.action_search)
+            startFragment(SearchFragment.newInstance())
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.action_local_top -> {
-                startFragment(TopAlbumsFragment.newInstance(navigator = this))
+                startFragment(TopAlbumsFragment.newInstance(bundle, this))
                 true
             }
             R.id.action_search -> {

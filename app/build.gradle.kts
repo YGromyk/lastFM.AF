@@ -40,6 +40,7 @@ dependencies {
     val koinVersion = "2.0.1"
     val timberVersion = "4.7.1"
     val picassoVersion = "2.71828"
+    val expandableLayoutVersion = "2.9.2"
 
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -52,6 +53,10 @@ dependencies {
     implementation("androidx.core:core-ktx:1.0.2")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha06")
+
+    // expandable layout
+    implementation("net.cachapa.expandablelayout:expandablelayout:$expandableLayoutVersion")
+
     //Picasso for Image Loading
     implementation("com.squareup.picasso:picasso:$picassoVersion")
 
