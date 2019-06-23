@@ -10,7 +10,7 @@ import com.gromyk.lastfmaf.presentation.base.BaseRecyclerAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.song_item.*
 
-class SongsAdapter : BaseRecyclerAdapter<Track>() {
+class TrackAdapter : BaseRecyclerAdapter<Track>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.song_item, parent, false))

@@ -11,17 +11,17 @@ import com.gromyk.lastfmaf.R
 import com.gromyk.lastfmaf.helpers.TimeHelper
 import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.FragmentParameters
-import com.gromyk.lastfmaf.presentation.Navigator
+import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
 import com.gromyk.lastfmaf.presentation.pojos.getImageLink
-import com.gromyk.lastfmaf.presentation.songs.SongsAdapter
+import com.gromyk.lastfmaf.presentation.songs.TrackAdapter
 import kotlinx.android.synthetic.main.album_details_fragment.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AlbumDetailsFragment : BaseFragment() {
     private val viewModel by viewModel<AlbumDetailsViewModel>()
-    private lateinit var adapter: SongsAdapter
+    private lateinit var adapter: TrackAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.album_details_fragment, container, false)
@@ -35,7 +35,7 @@ class AlbumDetailsFragment : BaseFragment() {
     }
 
     private fun initView() {
-        adapter = SongsAdapter()
+        adapter = TrackAdapter()
         songsRecyclerView.layoutManager = LinearLayoutManager(context)
         songsRecyclerView.adapter = adapter
         infoButton.setOnClickListener { openInfo() }

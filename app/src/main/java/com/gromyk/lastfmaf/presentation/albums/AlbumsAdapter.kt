@@ -33,7 +33,7 @@ class AlbumsAdapter(listener: OnSaveAlbum) : BaseRecyclerAdapter<AlbumUI>() {
 
             saveAlbumButton.setImageResource(
                 if (item.isSaved) R.drawable.ic_delete_black_24dp
-                else R.drawable.save_button_background
+                else R.drawable.ic_save_black_24dp
             )
         }
 
