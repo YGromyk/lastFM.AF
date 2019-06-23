@@ -12,7 +12,6 @@
         android:layout_margin="@dimen/base_small"
         android:background="@color/colorPrimary"
         android:contentDescription="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

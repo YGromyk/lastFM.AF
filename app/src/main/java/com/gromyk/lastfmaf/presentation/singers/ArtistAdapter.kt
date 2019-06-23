@@ -10,8 +10,11 @@ import com.gromyk.lastfmaf.presentation.base.BaseRecyclerAdapter
 import com.gromyk.lastfmaf.presentation.pojos.getImageLink
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.artist_item.*
+import java.lang.ref.WeakReference
 
-class SingerAdapter : BaseRecyclerAdapter<Artist>() {
+class ArtistAdapter(listener: OnArtistSelected) : BaseRecyclerAdapter<Artist>() {
+    private val listener = WeakReference(listener)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.artist_item, parent, false))
 
@@ -28,6 +31,12 @@ class SingerAdapter : BaseRecyclerAdapter<Artist>() {
         }
 
         override fun onClick(v: View?) {
+            val artist = items[adapterPosition]
+            listener.get()?.onArtistSelected(artist)
         }
+    }
+
+    interface OnArtistSelected {
+        fun onArtistSelected(artist: Artist)
     }
 }
