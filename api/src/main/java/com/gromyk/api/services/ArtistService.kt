@@ -1,4 +1,4 @@
-package com.gromyk.api
+package com.gromyk.api.services
 
 import com.gromyk.api.dtos.artist.ArtistInfo
 import com.gromyk.api.dtos.ArtistSearchResponse
