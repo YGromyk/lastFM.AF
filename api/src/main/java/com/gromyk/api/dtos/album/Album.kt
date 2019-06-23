@@ -25,5 +25,5 @@ data class Album(
     @SerializedName("url")
     var url: String,
     @SerializedName("wiki")
-    var wiki: Wiki
+    var wiki: Wiki?
 )
