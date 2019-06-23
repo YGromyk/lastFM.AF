@@ -1,1 +1,1 @@
-include(":app", ":api", ":persistence")
+include(":app", ":api", ":persistence", ":domain")
