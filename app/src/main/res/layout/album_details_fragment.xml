@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/layoutBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toTopOf="@+id/songsRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/albumImageView"
+        android:layout_width="145dp"
+        android:layout_height="145dp"
+        android:layout_margin="@dimen/base"
+        android:layout_marginBottom="@dimen/base"
+        android:contentDescription="@null"
+        android:src="@drawable/music_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/albumNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/base"
+        android:layout_marginEnd="@dimen/base"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textAlignment="textStart"
+        android:textColor="@color/textColorDark"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/albumImageView"
+        app:layout_constraintTop_toTopOf="@+id/albumImageView"
+        tools:text="Skins" />
+
+    <TextView
+        android:id="@+id/albumSingerTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="textStart"
+        android:textColor="@color/textColorDark"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/albumNameTextView"
+        app:layout_constraintStart_toStartOf="@+id/albumNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/albumNameTextView"
+        tools:text="Somebody" />
+
+    <TextView
+        android:id="@+id/publishedDateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="textStart"
+        android:textColor="@color/textColorDark"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/albumNameTextView"
+        app:layout_constraintStart_toStartOf="@+id/albumNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/albumSingerTextView"
+        tools:text="dd.mm.yyyy" />
+
+    <TextView
+        android:id="@+id/durationTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="textStart"
+        android:textColor="@color/textColorDark"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/albumNameTextView"
+        app:layout_constraintStart_toStartOf="@+id/albumNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/publishedDateTextView"
+        tools:text="dd.mm.yyyy" />
+
+    <Button
+        android:id="@+id/saveButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorDark"
+        app:layout_constraintEnd_toStartOf="@id/buttonBarrier"
+        app:layout_constraintStart_toStartOf="@id/albumNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/durationTextView" />
+
+
+    <Button
+        android:id="@+id/infoButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/info"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorDark"
+        app:layout_constraintEnd_toEndOf="@id/albumNameTextView"
+        app:layout_constraintStart_toEndOf="@id/buttonBarrier"
+        app:layout_constraintTop_toBottomOf="@id/durationTextView" />
+
+    <View
+        android:id="@+id/buttonBarrier"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="@id/albumNameTextView"
+        app:layout_constraintStart_toStartOf="@id/albumNameTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/songsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/base"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/albumImageView"
+        tools:listitem="@layout/song_item" />
+
+    <include
+        layout="@layout/progress_bar_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
