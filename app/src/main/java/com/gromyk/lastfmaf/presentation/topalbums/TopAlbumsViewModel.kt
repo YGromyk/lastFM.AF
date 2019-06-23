@@ -24,11 +24,6 @@ class TopAlbumsViewModel : BaseViewModel() {
         api.artistService.searchArtistByName(name)
     }
 
-    fun fetchAlbumsInfoBy(artist: String, album: String) = scope.launch {
-        val albumResponse = api.artistService.getAlbumInfo(artist, album)
-//        topAlbums.postValue(listOf(albumResponse.album))
-    }
-
 
     fun fetchTopAlbumsBy(artist: String) = scope.launch {
         searchedArtist = artist

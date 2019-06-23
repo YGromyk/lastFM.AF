@@ -16,16 +16,17 @@ class AlbumsAdapter(listener: OnSaveAlbum) : BaseRecyclerAdapter<AlbumUI>() {
     private val listener = WeakReference(listener)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.album_item, parent, false))
+            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.album_item, parent, false))
 
-    @Suppress("Warnings")
-    inner class ViewHolder(itemView: View) : BaseRecyclerAdapter.ViewHolder<AlbumUI>(itemView) {
-        private val albumImageView: ImageView by lazy { itemView.findViewById<ImageView>(R.id.albumImageView) }
-        private val saveAlbumButton: ImageButton by lazy { itemView.findViewById<ImageButton>(R.id.saveAlbumButton) }
-        private val albumNameTextView: TextView by lazy { itemView.findViewById<TextView>(R.id.albumNameTextView) }
-        private val albumSingerTextView: TextView by lazy { itemView.findViewById<TextView>(R.id.albumSingerTextView) }
+    inner class ViewHolder(itemView: View) : BaseRecyclerAdapter.ViewHolder<AlbumUI>(itemView),
+            View.OnClickListener {
+        private val albumImageView by lazy { itemView.findViewById<ImageView>(R.id.albumImageView) }
+        private val saveAlbumButton by lazy { itemView.findViewById<ImageButton>(R.id.saveAlbumButton) }
+        private val albumNameTextView by lazy { itemView.findViewById<TextView>(R.id.albumNameTextView) }
+        private val albumSingerTextView by lazy { itemView.findViewById<TextView>(R.id.albumSingerTextView) }
 
         override fun bindView(item: AlbumUI) {
+            itemView.setOnClickListener(this)
             item.imageLink?.let {
                 albumImageView.loadPhoto(it)
             }
@@ -39,12 +40,17 @@ class AlbumsAdapter(listener: OnSaveAlbum) : BaseRecyclerAdapter<AlbumUI>() {
             if (album.isSaved)
                 listener.get()?.saveAlbum(album)
             else
-                listener.get()?.removeAlbun(album)
+                listener.get()?.removeAlbum(album)
+        }
+
+        override fun onClick(v: View?) {
+            listener.get()?.openAlbumDetails(items[adapterPosition])
         }
     }
 
     interface OnSaveAlbum {
         fun saveAlbum(albumUI: AlbumUI)
-        fun removeAlbun(albumUI: AlbumUI)
+        fun removeAlbum(albumUI: AlbumUI)
+        fun openAlbumDetails(albumUI: AlbumUI)
     }
 }

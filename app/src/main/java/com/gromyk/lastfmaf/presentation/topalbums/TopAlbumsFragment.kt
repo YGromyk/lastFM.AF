@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.gromyk.lastfmaf.R
+import com.gromyk.lastfmaf.presentation.FragmentParameters
+import com.gromyk.lastfmaf.presentation.Navigator
+import com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment
 import com.gromyk.lastfmaf.presentation.albums.AlbumsAdapter
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
@@ -26,7 +30,9 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         super.onViewCreated(view, savedInstanceState)
         initView()
         subscribeOnLiveDataVM()
-        viewModel.fetchTopAlbumsBy("\$uicideboy\$")
+//        viewModel.fetchTopAlbumsBy("\$uicideboy\$")
+        viewModel.fetchTopAlbumsBy("Chere")
+
     }
 
     private fun subscribeOnLiveDataVM() {
@@ -66,13 +72,28 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         println("save")
     }
 
-    override fun removeAlbun(albumUI: AlbumUI) {
+    override fun removeAlbum(albumUI: AlbumUI) {
         println("remove")
     }
 
+    override fun openAlbumDetails(albumUI: AlbumUI) {
+        val bundle = bundleOf(
+                FragmentParameters.ALBUM_KEY to albumUI.name,
+                FragmentParameters.ARTIST_KEY to albumUI.artist
+        )
+        activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.fragmentContainer, AlbumDetailsFragment.newInstance(bundle, navigator))
+                ?.addToBackStack(AlbumDetailsFragment::class.java.simpleName)
+                ?.commit()
+    }
+
     companion object {
-        fun newInstance(parameters: Bundle? = null) = TopAlbumsFragment().apply {
+        fun newInstance(
+                parameters: Bundle? = null,
+                navigator: Navigator
+        ) = TopAlbumsFragment().apply {
             arguments = parameters
+            this.navigator = navigator
         }
     }
 }
