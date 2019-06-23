@@ -1,26 +1,27 @@
 package com.gromyk.persistence.artist
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = Artist.TABLE_NAME)
 data class Artist(
-    @ColumnInfo(name = "bio")
-    var bio: Bio? = null,
-    @ColumnInfo(name = "image")
-    var image: List<Image>? = null,
-    @ColumnInfo(name = "mbid")
-    var mbid: String? = null,
-    @ColumnInfo(name = "name")
-    var name: String? = null,
-    @ColumnInfo(name = "ontour")
-    var ontour: String? = null,
-    @ColumnInfo(name = "similar")
-    var similar: Similar? = null,
-    @ColumnInfo(name = "stats")
-    var stats: Stats? = null,
-    @ColumnInfo(name = "streamable")
-    var streamable: String? = null,
-    @ColumnInfo(name = "tags")
-    var tags: Tags? = null,
-    @ColumnInfo(name = "url")
-    var url: String? = null
-)
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "artist_id")
+        var id: Int,
+
+        @ColumnInfo(name = "bio") var bio: Bio? = null,
+        @ColumnInfo(name = "image") var image: List<Image>? = null,
+        @ColumnInfo(name = "mbid") var mbid: String? = null,
+        @ColumnInfo(name = "name") var name: String? = null,
+        @ColumnInfo(name = "ontour") var ontour: String? = null,
+        @ColumnInfo(name = "similar") var similar: Similar? = null,
+        @ColumnInfo(name = "stats") var stats: Stats? = null,
+        @ColumnInfo(name = "streamable") var streamable: String? = null,
+        @ColumnInfo(name = "tags") var tags: Tags? = null,
+        @ColumnInfo(name = "url") var url: String? = null
+) {
+    companion object {
+        const val TABLE_NAME = "Artist"
+    }
+}
