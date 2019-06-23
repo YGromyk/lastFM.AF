@@ -23,5 +23,7 @@ data class Artist(
     @SerializedName("tags")
     var tags: Tags? = null,
     @SerializedName("url")
-    var url: String? = null
+    var url: String? = null,
+    @SerializedName("listeners")
+    var listeners: String?
 )

@@ -7,5 +7,7 @@
     <color name="layoutBackground">#FFEBEE</color>
 
     <color name="textColorDark">#000</color>
+    <color name="textColorLight">#fff</color>
+
     <color name="lightIcon">#ACA8A8</color>
 </resources>
