@@ -1,4 +1,3 @@
-
 plugins {
     id( "com.android.library")
     kotlin("android")
@@ -7,7 +6,6 @@ plugins {
 
 android {
     compileSdkVersion(28)
-
 
     defaultConfig {
         minSdkVersion(21)

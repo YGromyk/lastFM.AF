@@ -17,21 +17,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
 }
 
 dependencies {
     val timberVersion = "4.7.1"
+    val roomVersion = "2.0.1"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // timber
     implementation("com.jakewharton.timber:timber:$timberVersion")
+
+    // room
+    implementation("android.arch.persistence.room:runtime:$roomVersion")
+    annotationProcessor("android.arch.persistence.room:compiler:$roomVersion")
+    androidTestImplementation("android.arch.persistence.room:testing:$roomVersion")
 
     // tests
     testImplementation("junit:junit:4.12")
