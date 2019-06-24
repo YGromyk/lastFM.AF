@@ -25,8 +25,8 @@ import kotlinx.android.synthetic.main.progress_bar_layout.*
 import kotlinx.android.synthetic.main.top_albums_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
-    private val viewModel by viewModel<TopAlbumsViewModel>()
+class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
+    private val viewModel by viewModel<AlbumsViewModel>()
     private lateinit var adapter: AlbumsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,9 +43,9 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
 
     private fun subscribeOnLiveDataVM() {
         viewModel.apply {
-            topAlbums.observe(this@TopAlbumsFragment, Observer(::onAlbumsLoaded))
-            artistInfo.observe(this@TopAlbumsFragment, Observer(::onArtistLoaded))
-            isResultReceived.observe(this@TopAlbumsFragment, Observer(::onTopAlbumsLoaded))
+            topAlbums.observe(this@AlbumsFragment, Observer(::onAlbumsLoaded))
+            artistInfo.observe(this@AlbumsFragment, Observer(::onArtistLoaded))
+            isResultReceived.observe(this@AlbumsFragment, Observer(::onTopAlbumsLoaded))
         }
     }
 
@@ -131,7 +131,7 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         fun newInstance(
             parameters: Bundle? = null,
             navigator: Navigator
-        ) = TopAlbumsFragment().apply {
+        ) = AlbumsFragment().apply {
             arguments = parameters
             this.navigator = navigator
         }

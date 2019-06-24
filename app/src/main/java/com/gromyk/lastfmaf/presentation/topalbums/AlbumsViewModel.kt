@@ -13,7 +13,7 @@ import com.gromyk.persistence.wiki.Wiki
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 
-class TopAlbumsViewModel : BaseViewModel() {
+class AlbumsViewModel : BaseViewModel() {
     private val api: Api by inject()
     private val repository: AlbumRepository by inject()
 

@@ -12,7 +12,7 @@ import com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment
 import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.navigation.Screen
 import com.gromyk.lastfmaf.presentation.search.SearchFragment
-import com.gromyk.lastfmaf.presentation.topalbums.TopAlbumsFragment
+import com.gromyk.lastfmaf.presentation.topalbums.AlbumsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
-        startFragment(TopAlbumsFragment.newInstance(navigator = this))
+        startFragment(AlbumsFragment.newInstance(navigator = this))
     }
 
     private fun initView() {
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun navigateTo(screen: Int, parameters: Bundle?) {
         when (screen) {
-            Screen.ARTIST_DETAILS -> startFragment(TopAlbumsFragment.newInstance(parameters, this))
+            Screen.ARTIST_DETAILS -> startFragment(AlbumsFragment.newInstance(parameters, this))
             Screen.ALBUM_DETAILS -> startFragment(AlbumDetailsFragment.newInstance(parameters, this))
             Screen.OPEN_WEB -> {
             }
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(),
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.action_local_top -> {
-                startFragment(TopAlbumsFragment.newInstance(navigator = this))
+                startFragment(AlbumsFragment.newInstance(navigator = this))
                 true
             }
             R.id.action_search -> {
