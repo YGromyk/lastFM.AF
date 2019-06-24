@@ -14,10 +14,10 @@ import com.gromyk.api.dtos.artist.Artist
 import com.gromyk.lastfmaf.R
 import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.FragmentParameters
-import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment
 import com.gromyk.lastfmaf.presentation.albums.AlbumsAdapter
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
+import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
 import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
 import kotlinx.android.synthetic.main.artist_info.*
@@ -38,8 +38,7 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         initView()
         getExtras()
         subscribeOnLiveDataVM()
-        viewModel.fetchTopAlbumsBy()
-        viewModel.fetchArtistInfo()
+        viewModel.fetchData()
     }
 
     private fun subscribeOnLiveDataVM() {
@@ -57,13 +56,15 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         recyclerView.layoutManager = GridLayoutManager(this.context, 2)
         swipeRefreshLayout.setOnRefreshListener {
             if (viewModel.isResultReceived.value == true)
-                viewModel.fetchTopAlbumsBy()
+                viewModel.fetchData()
         }
-
         infoButton.setOnClickListener {
             moreInfoExpandableLayout?.apply {
                 isExpanded = !isExpanded
             }
+        }
+        if (viewModel.loadLocalData) {
+            artistInfoLayout.visibility = View.GONE
         }
     }
 
@@ -97,7 +98,7 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
     }
 
     override fun saveAlbum(albumUI: AlbumUI) {
-        viewModel.saveAlbum(albumUI?.name, albumUI?.artist)
+        viewModel.saveAlbumAndArtist(albumUI.name, albumUI.artist)
     }
 
     override fun removeAlbum(albumUI: AlbumUI) {
@@ -107,10 +108,12 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
     override fun openAlbumDetails(albumUI: AlbumUI) {
         val bundle = bundleOf(
             FragmentParameters.ALBUM_KEY to albumUI.name,
-            FragmentParameters.ARTIST_KEY to albumUI.artist
+            FragmentParameters.ARTIST_KEY to albumUI.artist,
+            FragmentParameters.LOAD_LOCAL_DATA to viewModel.loadLocalData
         )
+        val fragment = AlbumDetailsFragment.newInstance(bundle, navigator)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.add(R.id.fragmentContainer, AlbumDetailsFragment.newInstance(bundle, navigator))
+            ?.add(R.id.fragmentContainer, fragment)
             ?.addToBackStack(AlbumDetailsFragment::class.java.simpleName)
             ?.commit()
     }
@@ -119,6 +122,7 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         arguments?.apply {
             getString(FragmentParameters.ARTIST_KEY)?.let {
                 viewModel.searchedArtist = it
+                viewModel.loadLocalData = false
             }
         }
     }

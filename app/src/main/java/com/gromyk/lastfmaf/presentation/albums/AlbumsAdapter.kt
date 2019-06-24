@@ -39,10 +39,15 @@ class AlbumsAdapter(listener: OnSaveAlbum) : BaseRecyclerAdapter<AlbumUI>() {
 
         private fun onSaveAlbum() {
             val album = items[adapterPosition]
-            if (!album.isSaved)
+            if (!album.isSaved) {
                 listener.get()?.saveAlbum(album)
-            else
+                saveAlbumButton.setImageResource(R.drawable.ic_delete_black_24dp)
+            }
+            else {
                 listener.get()?.removeAlbum(album)
+                saveAlbumButton.setImageResource(R.drawable.ic_save_black_24dp)
+            }
+            album.isSaved = !album.isSaved
         }
 
         override fun onClick(v: View?) {

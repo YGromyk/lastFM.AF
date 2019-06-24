@@ -8,7 +8,8 @@ import com.gromyk.lastfmaf.domain.repository.AlbumRepository
 import com.gromyk.lastfmaf.helpers.*
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
-import com.gromyk.persistence.AlbumObject
+import com.gromyk.persistence.composedalbum.AlbumObject
+import com.gromyk.persistence.wiki.Wiki
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 
@@ -26,32 +27,68 @@ class TopAlbumsViewModel : BaseViewModel() {
     private lateinit var savedArtist: Artist
     var searchedArtist: String? = null
 
-    fun fetchArtistInfo() = scope.launch {
+    var loadLocalData: Boolean = true
+
+    private fun fetchArtistInfo() = scope.launch {
         val artist = api.artistService.getArtistInfo(searchedArtist!!)
         savedArtist = artist.artist
         artistInfo.postValue(savedArtist)
+        repository.saveArtist(savedArtist.toDBArtist())
     }
 
-    fun fetchTopAlbumsBy() = scope.launch {
-        isResultReceived.postValue(false)
+    fun fetchData() {
+        scope.launch {
+            isResultReceived.postValue(false)
+            if (loadLocalData) {
+                fetchLocalData()
+            } else {
+                fetchTopAlbums()
+                fetchArtistInfo()
+            }
+            isResultReceived.postValue(true)
+        }
+    }
+
+    private fun fetchTopAlbums() = scope.launch {
         val albumResponse = api.artistService.getTopAlbumsFor(searchedArtist!!)
         savedAlbums.addAll(albumResponse.topAlbums.albums)
-        // savedAlbums.map { it.toAlbumUI() }
-        topAlbums.postValue(repository.getLocalAlbums().map { it.toAlbumUI() })
-        isResultReceived.postValue(true)
+        val loadedAlbums = savedAlbums.map { it.toAlbumUI() }
+        decorateLoadedAlbums(loadedAlbums)
+        topAlbums.postValue(loadedAlbums)
     }
 
-    fun saveAlbum(name: String?, artist: String?) {
+    private fun fetchLocalData() {
+        topAlbums.postValue(getLocalAlbums())
+    }
+
+    private fun getLocalAlbums() = repository.getLocalAlbums()
+        .map {
+            it.toAlbumUI(
+                repository.getArtistById(it.album.artistId)?.name ?: ""
+            )
+        }
+
+    private fun decorateLoadedAlbums(loadedAlbums: List<AlbumUI>) {
+        val localAlbums = getLocalAlbums()
+        loadedAlbums.forEach { loadedAlbum ->
+            loadedAlbum.isSaved = localAlbums.find {
+                it.artist == loadedAlbum.artist && it.name == loadedAlbum.name
+            } != null
+        }
+    }
+
+
+    fun saveAlbumAndArtist(name: String?, artist: String?) {
         scope.launch {
             val albumDetails = repository.api.artistService.getAlbumInfo(artist!!, name!!)
-            albumDetails.album.let {
+            val artistId = repository.saveArtist(savedArtist.toDBArtist())
+            albumDetails.album.let { album ->
                 val albumObject = AlbumObject(
-                    it.toDBAlbum(),
-                    it.wiki?.toDBWiki(),
-                    it.image.map { it.toDBImage() } ?: emptyList(),
-                    it.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
-                    it.tags.tag?.map { it.toDBTag() } ?: emptyList(),
-                    savedArtist.toDBArtist()
+                    album.toDBAlbum().apply { this.artistId = artistId },
+                    album.wiki?.toDBWiki() ?: Wiki(),
+                    album.image.map { it.toDBImage() },
+                    album.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
+                    album.tags.tag?.map { it.toDBTag() } ?: emptyList()
                 )
                 repository.saveAlbum(albumObject)
             }
@@ -59,6 +96,9 @@ class TopAlbumsViewModel : BaseViewModel() {
     }
 
     fun removeAlbum(name: String?, artist: String?) {
-//        val albumToSave = albums?.find { it.artist?.isBlank() }
+        scope.launch {
+            repository.removeAlbumBy(artist!!, name!!)
+            fetchLocalData()
+        }
     }
 }
