@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
 }
 
 android {
@@ -41,10 +42,11 @@ dependencies {
     val timberVersion = "4.7.1"
     val picassoVersion = "2.71828"
     val expandableLayoutVersion = "2.9.2"
-
+    val roomVersion = "2.0.1"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     api(project(":api"))
+    api(project(":persistence"))
 
     // ui
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
@@ -61,8 +63,8 @@ dependencies {
     implementation("com.squareup.picasso:picasso:$picassoVersion")
 
     // viewModels
-    implementation("android.arch.lifecycle:extensions:${lifeCycleVersion}")
-    implementation("android.arch.lifecycle:viewmodel:${lifeCycleVersion}")
+    implementation("android.arch.lifecycle:extensions:$lifeCycleVersion")
+    implementation("android.arch.lifecycle:viewmodel:$lifeCycleVersion")
 
     //Kotlin Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutineVersion")
@@ -74,6 +76,11 @@ dependencies {
 
     // timber
     implementation("com.jakewharton.timber:timber:$timberVersion")
+
+    // room
+    implementation("android.arch.persistence.room:runtime:$roomVersion")
+    kapt("android.arch.persistence.room:compiler:$roomVersion")
+    androidTestImplementation("android.arch.persistence.room:testing:$roomVersion")
 
     // tests
     testImplementation("junit:junit:4.12")
