@@ -3,7 +3,7 @@ package com.gromyk.lastfmaf.presentation.base
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.gromyk.lastfmaf.presentation.Navigator
+import com.gromyk.lastfmaf.presentation.navigation.Navigator
 
 abstract class BaseFragment : Fragment() {
     protected lateinit var navigator: Navigator

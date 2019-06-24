@@ -11,8 +11,8 @@ import com.gromyk.lastfmaf.R
 import com.gromyk.lastfmaf.helpers.TimeHelper
 import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.FragmentParameters
-import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
+import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.pojos.getImageLink
 import com.gromyk.lastfmaf.presentation.songs.TrackAdapter
 import kotlinx.android.synthetic.main.album_details_fragment.*
@@ -24,7 +24,7 @@ class AlbumDetailsFragment : BaseFragment() {
     private lateinit var adapter: TrackAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.album_details_fragment, container, false)
+        inflater.inflate(R.layout.album_details_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,9 +52,9 @@ class AlbumDetailsFragment : BaseFragment() {
         albumImageView.loadPhoto(album.image.getImageLink())
         albumNameTextView.text = album.name
         albumSingerTextView.text = album.artist
-        durationTextView.text = TimeHelper.formatToMMSS(album.tracks.track.map { it.duration.toInt() }.sum())
+        durationTextView.text = TimeHelper.formatToMMSS(album.tracks.track?.map { it.duration.toInt() }?.sum() ?: 0)
         publishedDateTextView.text = album.wiki?.published ?: "Unknown"
-        adapter.replaceItems(album.tracks.track)
+        adapter.replaceItems(album.tracks.track ?: return)
     }
 
     private fun onAlbumIsLoaded(isLoaded: Boolean) {
@@ -77,8 +77,8 @@ class AlbumDetailsFragment : BaseFragment() {
         arguments?.apply {
             val showAlertIfNullAndReturnValue = { str: String? ->
                 str ?: showError(
-                        getString(R.string.error),
-                        getString(R.string.you_have_to_select_album)
+                    getString(R.string.error),
+                    getString(R.string.you_have_to_select_album)
                 )
                 str
             }
@@ -89,8 +89,8 @@ class AlbumDetailsFragment : BaseFragment() {
 
     companion object {
         fun newInstance(
-                parameters: Bundle? = null,
-                navigator: Navigator
+            parameters: Bundle? = null,
+            navigator: Navigator
         ) = AlbumDetailsFragment().apply {
             arguments = parameters
             this.navigator = navigator

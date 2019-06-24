@@ -14,7 +14,8 @@ class App: Application() {
     private fun initKoin() {
         val modules = listOf(
             com.gromyk.api.di.api,
-            com.gromyk.lastfmaf.di.viewModels
+            com.gromyk.lastfmaf.di.viewModels,
+            com.gromyk.lastfmaf.di.repository
         )
         startKoin {
             androidContext(this@App)

@@ -22,8 +22,8 @@ class TrackAdapter : BaseRecyclerAdapter<Track>() {
             itemView.setOnClickListener(this)
             songNumberTextView.text = (adapterPosition + 1).toString()
             songNameTextView.text = item.name
-            songArtistTextView.text = item.artist.name
-            songTimeTextView.text = TimeHelper.formatToMMSS(item.duration?.toInt())
+            songArtistTextView.text = item.artist?.name ?: ""
+            songTimeTextView.text = TimeHelper.formatToMMSS(item.duration.toInt())
         }
 
         override fun onClick(v: View?) {

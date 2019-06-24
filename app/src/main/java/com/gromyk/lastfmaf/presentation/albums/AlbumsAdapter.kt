@@ -39,7 +39,7 @@ class AlbumsAdapter(listener: OnSaveAlbum) : BaseRecyclerAdapter<AlbumUI>() {
 
         private fun onSaveAlbum() {
             val album = items[adapterPosition]
-            if (album.isSaved)
+            if (!album.isSaved)
                 listener.get()?.saveAlbum(album)
             else
                 listener.get()?.removeAlbum(album)

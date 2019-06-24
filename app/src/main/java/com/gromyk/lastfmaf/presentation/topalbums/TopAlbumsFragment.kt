@@ -52,7 +52,6 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
 
 
     private fun initView() {
-        initToolbar()
         adapter = AlbumsAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(this.context, 2)
@@ -98,11 +97,11 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
     }
 
     override fun saveAlbum(albumUI: AlbumUI) {
-        println("save")
+        viewModel.saveAlbum(albumUI?.name, albumUI?.artist)
     }
 
     override fun removeAlbum(albumUI: AlbumUI) {
-        println("remove")
+        viewModel.removeAlbum(albumUI.name, albumUI.artist)
     }
 
     override fun openAlbumDetails(albumUI: AlbumUI) {

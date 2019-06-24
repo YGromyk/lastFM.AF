@@ -6,13 +6,13 @@ import com.gromyk.api.dtos.artist.Artist
 
 data class Track(
     @SerializedName("artist")
-    var artist: Artist,
+    var artist: Artist?,
     @SerializedName("duration")
     var duration: String,
     @SerializedName("name")
     var name: String,
     @SerializedName("streamable")
-    var streamable: Streamable,
+    var streamable: Streamable?,
     @SerializedName("url")
     var url: String
 )

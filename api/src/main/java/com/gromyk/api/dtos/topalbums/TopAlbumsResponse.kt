@@ -19,23 +19,23 @@ data class TopAlbums(
 
 data class TopAlbum(
     @SerializedName("artist")
-    var artist: Artist,
+    var artist: Artist?,
     @SerializedName("image")
-    var image: List<Image>,
+    var image: List<Image>?,
     @SerializedName("listeners")
-    var listeners: String,
+    var listeners: String?,
     @SerializedName("mbid")
-    var mbid: String,
+    var mbid: String?,
     @SerializedName("name")
-    var name: String,
+    var name: String?,
     @SerializedName("playcount")
-    var playcount: String,
+    var playcount: String?,
     @SerializedName("tags")
-    var tags: Tags,
+    var tags: Tags?,
     @SerializedName("tracks")
-    var tracks: Tracks,
+    var tracks: Tracks?,
     @SerializedName("url")
     var url: String,
     @SerializedName("wiki")
-    var wiki: Wiki
+    var wiki: Wiki?
 )

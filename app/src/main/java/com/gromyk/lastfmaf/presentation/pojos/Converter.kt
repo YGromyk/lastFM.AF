@@ -7,8 +7,8 @@ import com.gromyk.lastfmaf.helpers.ImageConfig
 
 fun TopAlbum.modelUI() = AlbumUI(
         name,
-        artist.name ?: throw Exception("LastFM API is bullshit"),
-        image.getImageLink()
+        artist?.name ?: throw Exception("LastFM API is bullshit"),
+        image?.getImageLink()
 )
 
 fun List<Image>.getImageLink() =
