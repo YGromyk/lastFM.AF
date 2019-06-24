@@ -7,7 +7,7 @@ import com.gromyk.persistence.base.BaseDAO
 @Dao
 interface WikiDAO : BaseDAO<Wiki> {
     @Query("select * from ${Wiki.TABLE_NAME} where ${Wiki.ALBUM} = :albumId")
-    fun getWikiFor(albumId: Int): Wiki
+    fun getWikiFor(albumId: Long): Wiki
 
     @Query("delete from ${Wiki.TABLE_NAME}")
     fun clearTable()

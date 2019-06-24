@@ -2,19 +2,19 @@ package com.gromyk.persistence.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.gromyk.persistence.composedalbum.AlbumObject
 import com.gromyk.persistence.album.Album
 import com.gromyk.persistence.album.AlbumDAO
-import com.gromyk.persistence.track.Track
-import com.gromyk.persistence.wiki.Wiki
 import com.gromyk.persistence.artist.Artist
 import com.gromyk.persistence.artist.ArtistDAO
+import com.gromyk.persistence.composedalbum.AlbumObject
 import com.gromyk.persistence.composedalbum.AlbumObjectDAO
 import com.gromyk.persistence.image.Image
-import com.gromyk.persistence.tag.Tag
 import com.gromyk.persistence.image.ImageDAO
+import com.gromyk.persistence.tag.Tag
 import com.gromyk.persistence.tag.TagsDAO
+import com.gromyk.persistence.track.Track
 import com.gromyk.persistence.track.TracksDao
+import com.gromyk.persistence.wiki.Wiki
 import com.gromyk.persistence.wiki.WikiDAO
 import timber.log.Timber
 
@@ -78,7 +78,13 @@ abstract class AppDatabase : RoomDatabase() {
     fun saveArtist(artist: Artist) = artistDAO.insert(artist)
 
     fun getAllAlbums(): List<AlbumObject> {
-        return albumObjectDAO.getAlbums()
+        val list = albumObjectDAO.getAlbums()
+        list.forEach { albumId ->
+            albumId.wiki = albumId.album.albumId?.let { it1 ->
+                wikiDAO.getWikiFor(it1)
+            } ?: Wiki()
+        }
+        return list
     }
 
     fun removeAlbums(albumObject: AlbumObject) {

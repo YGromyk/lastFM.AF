@@ -3,7 +3,9 @@ package com.gromyk.lastfmaf.helpers
 import com.gromyk.api.dtos.album.Album
 import com.gromyk.api.dtos.album.Track
 import com.gromyk.api.dtos.album.Wiki
-import com.gromyk.api.dtos.artist.*
+import com.gromyk.api.dtos.artist.Artist
+import com.gromyk.api.dtos.artist.Image
+import com.gromyk.api.dtos.artist.Tag
 import com.gromyk.api.dtos.topalbums.TopAlbum
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
 import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
