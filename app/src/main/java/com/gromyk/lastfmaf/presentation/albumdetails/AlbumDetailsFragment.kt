@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gromyk.api.dtos.album.Album
 import com.gromyk.lastfmaf.R
 import com.gromyk.lastfmaf.helpers.TimeHelper
 import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.FragmentParameters
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
 import com.gromyk.lastfmaf.presentation.navigation.Navigator
-import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
+import com.gromyk.lastfmaf.presentation.pojos.imageLinkPersistence
 import com.gromyk.lastfmaf.presentation.songs.TrackAdapter
+import com.gromyk.persistence.composedalbum.AlbumObject
 import kotlinx.android.synthetic.main.album_details_fragment.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,7 +31,7 @@ class AlbumDetailsFragment : BaseFragment() {
         initView()
         getExtras()
         initViewModel()
-        viewModel.fetchAlbumsInfo()
+        viewModel.fetchData()
     }
 
     private fun initView() {
@@ -48,13 +48,16 @@ class AlbumDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun onAlbumLoaded(album: Album) {
-        albumImageView.loadPhoto(album.image.imageLinkAPI())
-        albumNameTextView.text = album.name
-        albumSingerTextView.text = album.artist
-        durationTextView.text = TimeHelper.formatToMMSS(album.tracks.track?.map { it.duration.toInt() }?.sum() ?: 0)
-        publishedDateTextView.text = album.wiki?.published ?: "Unknown"
-        adapter.replaceItems(album.tracks.track ?: return)
+    private fun onAlbumLoaded(album: AlbumObject) {
+        albumImageView.loadPhoto(album.images.imageLinkPersistence())
+        albumNameTextView.text = album.album.name
+        albumSingerTextView.text = viewModel.artist
+        durationTextView.text = TimeHelper.formatToMMSS(
+            album.tracks
+                .map { it.duration.toInt() }.sum()
+        )
+        publishedDateTextView.text = album.wiki.published ?: "Unknown"
+        adapter.replaceItems(album.tracks)
     }
 
     private fun onAlbumIsLoaded(isLoaded: Boolean) {
@@ -69,7 +72,7 @@ class AlbumDetailsFragment : BaseFragment() {
     }
 
     private fun openInfo() {
-        val url = viewModel.albumData.value?.url
+        val url = viewModel.albumData.value?.album?.url
         navigator.openWebPage(url ?: return)
     }
 
@@ -84,6 +87,7 @@ class AlbumDetailsFragment : BaseFragment() {
             }
             viewModel.artist = showAlertIfNullAndReturnValue(getString(FragmentParameters.ARTIST_KEY))
             viewModel.album = showAlertIfNullAndReturnValue(getString(FragmentParameters.ALBUM_KEY))
+            viewModel.loadLocalData = getBoolean(FragmentParameters.LOAD_LOCAL_DATA)
         }
     }
 

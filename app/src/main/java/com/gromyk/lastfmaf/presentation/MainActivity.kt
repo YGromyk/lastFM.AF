@@ -5,9 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gromyk.lastfmaf.R
 import com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment
@@ -15,29 +13,17 @@ import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.navigation.Screen
 import com.gromyk.lastfmaf.presentation.search.SearchFragment
 import com.gromyk.lastfmaf.presentation.topalbums.TopAlbumsFragment
-import com.gromyk.lastfmaf.presentation.topalbums.TopAlbumsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
     Navigator,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var viewModel: TopAlbumsViewModel
-
-    val bundle = bundleOf(
-        FragmentParameters.ARTIST_KEY to "Eminem",
-        FragmentParameters.ALBUM_KEY to "Kamikaze"
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel = ViewModelProviders.of(this).get(TopAlbumsViewModel::class.java)
-//        viewModel.fetchArtistInfo("Suicide Boys")
-//        viewModel.searchArtist("kendrick lamar")
-//        viewModel.fetchAlbumsInfo("Cher","Believe")
         initView()
-        startFragment(TopAlbumsFragment.newInstance(bundle, this))
+        startFragment(TopAlbumsFragment.newInstance(navigator = this))
     }
 
     private fun initView() {
@@ -82,7 +68,7 @@ class MainActivity : AppCompatActivity(),
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.action_local_top -> {
-                startFragment(TopAlbumsFragment.newInstance(bundle, this))
+                startFragment(TopAlbumsFragment.newInstance(navigator = this))
                 true
             }
             R.id.action_search -> {
