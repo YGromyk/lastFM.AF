@@ -13,7 +13,7 @@ import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.FragmentParameters
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
 import com.gromyk.lastfmaf.presentation.navigation.Navigator
-import com.gromyk.lastfmaf.presentation.pojos.getImageLink
+import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
 import com.gromyk.lastfmaf.presentation.songs.TrackAdapter
 import kotlinx.android.synthetic.main.album_details_fragment.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
@@ -49,7 +49,7 @@ class AlbumDetailsFragment : BaseFragment() {
     }
 
     private fun onAlbumLoaded(album: Album) {
-        albumImageView.loadPhoto(album.image.getImageLink())
+        albumImageView.loadPhoto(album.image.imageLinkAPI())
         albumNameTextView.text = album.name
         albumSingerTextView.text = album.artist
         durationTextView.text = TimeHelper.formatToMMSS(album.tracks.track?.map { it.duration.toInt() }?.sum() ?: 0)

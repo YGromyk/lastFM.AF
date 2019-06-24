@@ -7,63 +7,67 @@ import com.gromyk.api.dtos.album.Wiki
 import com.gromyk.api.dtos.artist.*
 import com.gromyk.api.dtos.topalbums.TopAlbum
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
+import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
+import com.gromyk.lastfmaf.presentation.pojos.imageLinkPersistence
+import com.gromyk.persistence.AlbumObject
 import com.gromyk.persistence.artist.Links
-import com.gromyk.persistence.artist.Tags
 
 fun Album.toDBAlbum() = com.gromyk.persistence.album.Album(
-    artist,
-    ArrayList(image.map { it.toDBImage() } ?: emptyList()),
+    null,
+//    ArrayList(image.map { it.toDBImage() } ?: emptyList()),
     listeners,
     mbid,
     name,
     playcount,
-    ArrayList(tags.tag?.map { it.toDBTag() } ?: emptyList()),
-    ArrayList(tracks.track?.map { it.toDBTrack() } ?: emptyList()),
-    url,
-    wiki?.toDBWiki()
+    url
+)
+
+
+fun AlbumObject.toAlbumUI() = AlbumUI(
+    album.name,
+    artist?.name,
+    images.imageLinkPersistence(),
+    true
+)
+
+fun TopAlbum.toAlbumUI() = AlbumUI(
+    name,
+    artist?.name,
+    image?.imageLinkAPI(),
+    false
 )
 
 fun TopAlbum.toDBAlbum() = com.gromyk.persistence.album.Album(
-    artist?.name ?: "",
-    ArrayList(image?.map { it.toDBImage() } ?: emptyList()),
+    null,
+//    ArrayList(image?.map { it.toDBImage() } ?: emptyList()),
     listeners,
     mbid,
     name ?: "",
     playcount,
-    ArrayList(tags?.tag?.map { it.toDBTag() } ?: emptyList()),
-    ArrayList(tracks?.track?.map { it.toDBTrack() } ?: emptyList()),
-    url,
-    wiki?.toDBWiki()
+    url
 )
 
-fun com.gromyk.persistence.album.Album.toUIAlbum() = AlbumUI(
+fun Track.toDBTrack() = com.gromyk.persistence.album.Track(
+    -1L,
+    duration,
     name,
-    artist,
-    image?.firstOrNull { it.text.isNotBlankAndEmpty() }?.text,
-    false
+    url
 )
 
-fun Image.toDBImage() = com.gromyk.persistence.artist.Image(size, text)
+fun Image.toDBImage() = com.gromyk.persistence.artist.Image(null, size, text)
 
-fun Tag.toDBTag() = com.gromyk.persistence.artist.Tag(name, url)
-fun Track.toDBTrack() =
-    com.gromyk.persistence.album.Track(null, artist?.toDBArtist(), duration, name, streamable?.toDBStreamable(), url)
+fun Tag.toDBTag() = com.gromyk.persistence.artist.Tag(null, name, url)
+
 
 fun Streamable.toDBStreamable() = com.gromyk.persistence.album.Streamable(fullTrack, text)
 fun Wiki.toDBWiki() = com.gromyk.persistence.album.Wiki(null, content, published, summary)
 
 fun Artist.toDBArtist() = com.gromyk.persistence.artist.Artist(
     null,
-    bio = bio?.toDBBio(),
-    image = image?.map { it.toDBImage() },
     mbid = mbid,
-    name = name,
+    name = name ?: "",
     ontour = ontour,
-    similar = similar?.toDBSimilar(),
-    stats = stats?.toDBStats(),
-    streamable = streamable,
-    tags = Tags(tags?.tag?.map { it.toDBTag() } ?: emptyList()),
-    url = url
+    url = url ?: ""
 )
 
 fun Bio.toDBBio() = com.gromyk.persistence.artist.Bio(content, Links(links.link.toDBLink()), published, summary)

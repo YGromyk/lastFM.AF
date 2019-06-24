@@ -7,7 +7,7 @@ import com.gromyk.api.dtos.artist.Artist
 import com.gromyk.lastfmaf.R
 import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.base.BaseRecyclerAdapter
-import com.gromyk.lastfmaf.presentation.pojos.getImageLink
+import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.artist_item.*
 import java.lang.ref.WeakReference
@@ -23,7 +23,7 @@ class ArtistAdapter(listener: OnArtistSelected) : BaseRecyclerAdapter<Artist>() 
             LayoutContainer {
         override fun bindView(item: Artist) {
             itemView.setOnClickListener(this)
-            item.image?.getImageLink()?.let {
+            item.image?.imageLinkAPI()?.let {
                 artistImageView.loadPhoto(it)
             }
             singerTextView.text = item.name

@@ -19,7 +19,7 @@ import com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment
 import com.gromyk.lastfmaf.presentation.albums.AlbumsAdapter
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
-import com.gromyk.lastfmaf.presentation.pojos.getImageLink
+import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
 import kotlinx.android.synthetic.main.artist_info.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
 import kotlinx.android.synthetic.main.top_albums_fragment.*
@@ -84,7 +84,7 @@ class TopAlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
 
     @SuppressLint("SetTextI18n")
     private fun onArtistLoaded(artist: Artist) {
-        artistImageView.loadPhoto(artist.image?.getImageLink() ?: "")
+        artistImageView.loadPhoto(artist.image?.imageLinkAPI() ?: "")
         singerTextView.text = "Artist: ${artist.name}"
         artist.stats?.playcount?.let { playCountTextView.text = "Play count: $it" }
         artist.stats?.listeners?.let { listenersTextView.text = "Listeners: $it" }
