@@ -7,7 +7,6 @@ import com.gromyk.persistence.album.Track
 import com.gromyk.persistence.album.Wiki
 import com.gromyk.persistence.artist.Image
 import com.gromyk.persistence.artist.Tag
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -24,7 +23,7 @@ open class BaseListConverter<T>{
     }
 
     @TypeConverter
-    fun listToString(someObjects: ArrayList<T>?): String {
+    fun listToString(someObjects: List<T>?): String {
         return gson.toJson(someObjects)
     }
 }
@@ -39,7 +38,7 @@ open class BaseObjectConverter<T>{
     }
 
     @TypeConverter
-    fun objectToSTring(obj: T): String {
+    fun objectToString(obj: T): String {
         return gson.toJson(obj)
     }
 }

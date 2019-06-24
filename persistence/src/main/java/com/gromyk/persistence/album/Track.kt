@@ -1,23 +1,32 @@
 package com.gromyk.persistence.album
 
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.Ignore
-import com.google.gson.annotations.SerializedName
-import com.gromyk.persistence.artist.Artist
+import androidx.room.Index
 
-data class Track(
-    @SerializedName("trackId")
-    var trackId: Int? = null,
-    @Ignore
-    @SerializedName("artist")
-    var artist: Artist?,
-    @SerializedName("duration")
-    var duration: String,
-    @SerializedName("name")
-    var name: String,
-    @Ignore
-    @SerializedName("streamable")
-    var streamable: Streamable?,
-    @SerializedName("url")
-    var url: String
+@Entity(
+    tableName = Track.TABLE_NAME,
+    indices = [Index(Track.ALBUM)],
+    primaryKeys = [ Track.TRACK_NAME, "url"]
 )
+class Track
+@Ignore constructor(
+    @ColumnInfo(name = ALBUM)
+    var albumId: Long = 0,
+    @ColumnInfo(name = "duration")
+    var duration: String,
+    @ColumnInfo(name = TRACK_NAME)
+    var name: String,
+    @ColumnInfo(name = "url")
+    var url: String
+) {
+    constructor() : this(-1, "", "", "")
+
+    companion object {
+        const val TABLE_NAME = "Tracks"
+        const val TRACK_NAME = "name"
+        const val ALBUM = "parentAlbum"
+    }
+}

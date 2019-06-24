@@ -1,18 +1,27 @@
 package com.gromyk.persistence.album
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 
-class Wiki(
-    @SerializedName("wikiId")
-    var columnId: Int? = null,
-    @SerializedName("content")
-    var content: String,
-    @SerializedName("published")
-    var published: String,
-    @SerializedName("summary")
-    var summary: String
+@Entity(tableName = Wiki.TABLE_NAME)
+class Wiki
+@Ignore constructor(
+    @PrimaryKey
+    @ColumnInfo(name = ALBUM)
+    var albumId: Int? = null,
+    @ColumnInfo(name = "content")
+    var content: String?,
+    @ColumnInfo(name = "published")
+    var published: String?,
+    @ColumnInfo(name = "summary")
+    var summary: String?
 ) {
+    constructor() : this(null, null, "", "")
+
     companion object {
         const val TABLE_NAME = "Wiki"
+        const val ALBUM = "wikiForAlbum"
     }
 }
