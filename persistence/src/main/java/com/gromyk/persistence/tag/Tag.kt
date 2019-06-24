@@ -1,26 +1,16 @@
-package com.gromyk.persistence.artist
+package com.gromyk.persistence.tag
 
 import androidx.room.*
-import com.gromyk.persistence.album.Album
 
 @Entity(
     tableName = Tag.TABLE_NAME,
-/*    foreignKeys = [
-        ForeignKey(
-            entity = Tag::class,
-            childColumns = [Album.ALBUM_ID],
-            parentColumns= [Tag.ALBUM],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
-        )
-    ],*/
-    indices = [Index(Tag.ALBUM)]
+    indices = [Index(Tag.ALBUM)],
+    primaryKeys = [Tag.ALBUM, "name"]
 )
 data class Tag
 @Ignore constructor(
     @ColumnInfo(name = "tagForAlbum")
-    var albumId: Int? = null,
-    @PrimaryKey
+    var albumId: Long = -1,
     @ColumnInfo(name = "name")
     var name: String,
     @ColumnInfo(name = "url")

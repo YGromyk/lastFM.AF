@@ -1,4 +1,4 @@
-package com.gromyk.persistence.dao
+package com.gromyk.persistence.base
 
 import androidx.room.*
 

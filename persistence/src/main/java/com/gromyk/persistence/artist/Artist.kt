@@ -10,18 +10,27 @@ import com.google.gson.annotations.SerializedName
 )
 data class Artist(
     @ColumnInfo(name = "artist_id")
-    var id: Int? = null,
+    var id: Long = -1L,
     @SerializedName("mbid")
     @ColumnInfo(name = "artist_mbid")
     var mbid: String? = null,
     @SerializedName("name")
-    @ColumnInfo(name = "artist_name") var name: String,
+    @ColumnInfo(name = "artist_name")
+    var name: String,
     @SerializedName("ontour")
-    @ColumnInfo(name = "ontour") var ontour: String? = null,
+    @ColumnInfo(name = "ontour")
+    var ontour: String? = null,
     @SerializedName("url")
-    @ColumnInfo(name = "artist_url") var url: String
+    @ColumnInfo(name = "artist_url")
+    var url: String
 ) {
-    constructor() : this(null, null, "", null, "")
+    constructor() : this(
+        -1L,
+        null,
+        "",
+        null,
+        ""
+    )
 
     companion object {
         const val TABLE_NAME = "Artist"

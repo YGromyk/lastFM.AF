@@ -1,9 +1,8 @@
-package com.gromyk.persistence.dao
+package com.gromyk.persistence.composedalbum
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.gromyk.persistence.AlbumObject
 import com.gromyk.persistence.album.Album
 
 @Dao

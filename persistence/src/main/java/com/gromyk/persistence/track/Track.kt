@@ -1,4 +1,4 @@
-package com.gromyk.persistence.album
+package com.gromyk.persistence.track
 
 
 import androidx.room.ColumnInfo
@@ -9,7 +9,7 @@ import androidx.room.Index
 @Entity(
     tableName = Track.TABLE_NAME,
     indices = [Index(Track.ALBUM)],
-    primaryKeys = [ Track.TRACK_NAME, "url"]
+    primaryKeys = [Track.TRACK_NAME, "url"]
 )
 class Track
 @Ignore constructor(
@@ -23,6 +23,8 @@ class Track
     var url: String
 ) {
     constructor() : this(-1, "", "", "")
+
+    var artistName: String? = null
 
     companion object {
         const val TABLE_NAME = "Tracks"

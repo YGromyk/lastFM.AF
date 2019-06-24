@@ -11,7 +11,7 @@ import androidx.room.Ignore
 )
 class Album
 @Ignore constructor(
-    var albumId: Int?,
+    var albumId: Long?,
     @ColumnInfo(name = "listeners")
     var listeners: String?,
     @ColumnInfo(name = "mbid")
@@ -21,12 +21,18 @@ class Album
     @ColumnInfo(name = "playcount")
     var playcount: String?,
     @ColumnInfo(name = "url")
-    var url: String
+    var url: String,
+    @ColumnInfo(name = "artistId")
+    var artistId: Long
 ) {
     constructor() : this(
         null,
-        "", null, null,
-        "", ""
+        "",
+        null,
+        null,
+        "",
+        "",
+        -1L
     )
 
     companion object {

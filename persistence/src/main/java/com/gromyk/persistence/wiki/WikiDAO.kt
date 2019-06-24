@@ -1,12 +1,14 @@
-package com.gromyk.persistence.dao
+package com.gromyk.persistence.wiki
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.gromyk.persistence.album.Album
-import com.gromyk.persistence.album.Wiki
+import com.gromyk.persistence.base.BaseDAO
 
 @Dao
 interface WikiDAO : BaseDAO<Wiki> {
     @Query("select * from ${Wiki.TABLE_NAME} where ${Wiki.ALBUM} = :albumId")
     fun getWikiFor(albumId: Int): Wiki
+
+    @Query("delete from ${Wiki.TABLE_NAME}")
+    fun clearTable()
 }

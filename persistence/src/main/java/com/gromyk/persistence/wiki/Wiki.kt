@@ -1,4 +1,4 @@
-package com.gromyk.persistence.album
+package com.gromyk.persistence.wiki
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -10,7 +10,7 @@ class Wiki
 @Ignore constructor(
     @PrimaryKey
     @ColumnInfo(name = ALBUM)
-    var albumId: Int? = null,
+    var albumId: Long? = null,
     @ColumnInfo(name = "content")
     var content: String?,
     @ColumnInfo(name = "published")
@@ -18,7 +18,12 @@ class Wiki
     @ColumnInfo(name = "summary")
     var summary: String?
 ) {
-    constructor() : this(null, null, "", "")
+    constructor() : this(
+        null,
+        null,
+        "",
+        ""
+    )
 
     companion object {
         const val TABLE_NAME = "Wiki"
