@@ -1,18 +1,23 @@
 package com.gromyk.persistence.album
 
 
-import androidx.room.ColumnInfo
+import androidx.room.Ignore
+import com.google.gson.annotations.SerializedName
 import com.gromyk.persistence.artist.Artist
 
 data class Track(
-    @ColumnInfo(name = "artist")
-    var artist: Artist,
-    @ColumnInfo(name = "duration")
+    @SerializedName("trackId")
+    var trackId: Int? = null,
+    @Ignore
+    @SerializedName("artist")
+    var artist: Artist?,
+    @SerializedName("duration")
     var duration: String,
-    @ColumnInfo(name = "name")
+    @SerializedName("name")
     var name: String,
-    @ColumnInfo(name = "streamable")
-    var streamable: Streamable,
-    @ColumnInfo(name = "url")
+    @Ignore
+    @SerializedName("streamable")
+    var streamable: Streamable?,
+    @SerializedName("url")
     var url: String
 )

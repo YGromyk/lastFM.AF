@@ -1,9 +1,10 @@
 package com.gromyk.persistence.artist
-import androidx.room.ColumnInfo
+
+import com.google.gson.annotations.SerializedName
 
 data class Image(
-    @ColumnInfo(name = "size")
+    @SerializedName("size")
     var size: String,
-    @ColumnInfo(name = "#text")
+    @SerializedName("#text")
     var text: String
 )

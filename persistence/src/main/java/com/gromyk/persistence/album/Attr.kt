@@ -1,9 +1,9 @@
 package com.gromyk.persistence.album
 
 
-import androidx.room.ColumnInfo
+import com.google.gson.annotations.SerializedName
 
 data class Attr(
-    @ColumnInfo(name = "rank")
+    @SerializedName("rank")
     var rank: String
 )

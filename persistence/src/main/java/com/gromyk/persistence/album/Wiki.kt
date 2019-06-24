@@ -1,13 +1,18 @@
 package com.gromyk.persistence.album
 
-import androidx.room.ColumnInfo
+import com.google.gson.annotations.SerializedName
 
-
-data class Wiki(
-    @ColumnInfo(name = "content")
+class Wiki(
+    @SerializedName("wikiId")
+    var columnId: Int? = null,
+    @SerializedName("content")
     var content: String,
-    @ColumnInfo(name = "published")
+    @SerializedName("published")
     var published: String,
-    @ColumnInfo(name = "summary")
+    @SerializedName("summary")
     var summary: String
-)
+) {
+    companion object {
+        const val TABLE_NAME = "Wiki"
+    }
+}
