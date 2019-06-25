@@ -1,4 +1,4 @@
-package com.gromyk.lastfmaf.presentation.topalbums
+package com.gromyk.lastfmaf.presentation.albums
 
 import android.os.Build
 import android.os.Bundle
@@ -13,10 +13,7 @@ import com.gromyk.api.dtos.artist.Artist
 import com.gromyk.lastfmaf.R
 import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.FragmentParameters
-import com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment
-import com.gromyk.lastfmaf.presentation.albums.AlbumsAdapter
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
-import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
 import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
 import com.gromyk.lastfmaf.presentation.views.PlaceholderType
@@ -118,11 +115,12 @@ class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
                 FragmentParameters.ARTIST_KEY to albumUI.artist,
                 FragmentParameters.LOAD_LOCAL_DATA to viewModel.loadLocalData
         )
-        val fragment = AlbumDetailsFragment.newInstance(bundle, navigator)
-        activity?.supportFragmentManager?.beginTransaction()
-                ?.add(R.id.fragmentContainer, fragment)
-                ?.addToBackStack(AlbumDetailsFragment::class.java.simpleName)
-                ?.commit()
+        val action =
+                if (viewModel.loadLocalData)
+                    R.id.action_albumsFragment_to_albumDetailsFragment
+                else
+                    R.id.action_albumsFragment2_to_albumDetailsFragment2
+        getNavController()?.navigate(action, bundle)
     }
 
     private fun getExtras() {
@@ -134,13 +132,4 @@ class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         }
     }
 
-    companion object {
-        fun newInstance(
-                parameters: Bundle? = null,
-                navigator: Navigator
-        ) = AlbumsFragment().apply {
-            arguments = parameters
-            this.navigator = navigator
-        }
-    }
 }

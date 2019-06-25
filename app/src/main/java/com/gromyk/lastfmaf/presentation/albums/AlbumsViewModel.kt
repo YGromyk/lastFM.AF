@@ -1,14 +1,13 @@
-package com.gromyk.lastfmaf.presentation.topalbums
+package com.gromyk.lastfmaf.presentation.albums
 
 import androidx.lifecycle.MutableLiveData
 import com.gromyk.api.Api
 import com.gromyk.api.dtos.artist.Artist
 import com.gromyk.api.dtos.topalbums.TopAlbum
 import com.gromyk.lastfmaf.domain.repository.AlbumRepository
-import com.gromyk.lastfmaf.helpers.*
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
 import com.gromyk.lastfmaf.presentation.networkstate.onError
-import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
+import com.gromyk.lastfmaf.presentation.pojos.*
 import com.gromyk.persistence.composedalbum.AlbumObject
 import com.gromyk.persistence.wiki.Wiki
 import kotlinx.coroutines.launch
@@ -20,7 +19,7 @@ class AlbumsViewModel : BaseViewModel() {
 
     val topAlbums = MutableLiveData<List<AlbumUI>>()
     val artistInfo = MutableLiveData<Artist>()
-    val savedAlbums = mutableListOf<TopAlbum>()
+    private val savedAlbums = mutableListOf<TopAlbum>()
 
 
     val isResultReceived = MutableLiveData<Boolean>()
@@ -77,11 +76,12 @@ class AlbumsViewModel : BaseViewModel() {
     }
 
     private fun getLocalAlbums() = repository.getLocalAlbums()
-        .map {
-            it.toAlbumUI(
-                repository.getArtistById(it.album.artistId)?.name ?: ""
-            )
-        }
+            .toMutableList()
+            .map {
+                it.toAlbumUI(
+                        repository.getArtistById(it.album.artistId)?.name ?: ""
+                )
+            }
 
     private fun decorateLoadedAlbums(loadedAlbums: List<AlbumUI>) {
         val localAlbums = getLocalAlbums()
@@ -101,11 +101,11 @@ class AlbumsViewModel : BaseViewModel() {
             if (albumDetailsResponse.isSuccessful) {
                 albumDetailsResponse.body()?.album?.let { album ->
                     val albumObject = AlbumObject(
-                        album.toDBAlbum().apply { this.artistId = artistId },
-                        album.wiki?.toDBWiki() ?: Wiki(),
-                        album.image.map { it.toDBImage() },
-                        album.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
-                        album.tags.tag?.map { it.toDBTag() } ?: emptyList()
+                            album.toDBAlbum().apply { this.artistId = artistId },
+                            album.wiki?.toDBWiki() ?: Wiki(),
+                            album.image.map { it.toDBImage() },
+                            album.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
+                            album.tags.tag?.map { it.toDBTag() } ?: emptyList()
                     )
                     repository.saveAlbum(albumObject)
                 }

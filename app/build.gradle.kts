@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -44,6 +45,7 @@ dependencies {
     val expandableLayoutVersion = "2.9.2"
     val roomVersion = "2.0.1"
     val retrofitConverterVersion = "2.6.0"
+    val navigationVersion = "1.0.0"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     api(project(":api"))
@@ -86,6 +88,10 @@ dependencies {
     // rest
     implementation("com.squareup.retrofit2:converter-gson:$retrofitConverterVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:3.14.2")
+
+    // navigation
+    implementation ("android.arch.navigation:navigation-fragment-ktx:$navigationVersion")
+    implementation ("android.arch.navigation:navigation-ui-ktx:$navigationVersion")
 
     // tests
     testImplementation("junit:junit:4.12")

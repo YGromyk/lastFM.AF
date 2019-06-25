@@ -16,7 +16,8 @@ class AlbumRepository : KoinComponent {
 
 
     fun getLocalAlbums(): List<AlbumObject> {
-        localAlbums.clearAndInsert(database.getAllAlbums())
+        val albums = database.getAllAlbums().toMutableList()
+        localAlbums.clearAndInsert(albums)
         return localAlbums
     }
 

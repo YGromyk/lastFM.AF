@@ -21,6 +21,8 @@ class ArtistAdapter(listener: OnArtistSelected) : BaseRecyclerAdapter<Artist>() 
     inner class ViewHolder(override val containerView: View?) : BaseRecyclerAdapter.ViewHolder<Artist>(containerView!!),
             View.OnClickListener,
             LayoutContainer {
+
+        @Suppress("warnings")
         override fun bindView(item: Artist) {
             itemView.setOnClickListener(this)
             item.image?.imageLinkAPI()?.let {

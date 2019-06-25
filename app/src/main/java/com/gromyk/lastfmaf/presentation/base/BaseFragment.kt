@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.networkstate.NetworkState
@@ -44,4 +45,6 @@ abstract class BaseFragment : Fragment() {
             placeholder?.showPlaceholder(0, PlaceholderType.NO_INTERNET)
         }
     }
+
+    protected fun getNavController() = view?.let { Navigation.findNavController(it) }
 }

@@ -1,4 +1,4 @@
-package com.gromyk.lastfmaf.helpers
+package com.gromyk.lastfmaf.presentation.pojos
 
 import com.gromyk.api.dtos.album.Album
 import com.gromyk.api.dtos.album.Track
@@ -7,9 +7,6 @@ import com.gromyk.api.dtos.artist.Artist
 import com.gromyk.api.dtos.artist.Image
 import com.gromyk.api.dtos.artist.Tag
 import com.gromyk.api.dtos.topalbums.TopAlbum
-import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
-import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
-import com.gromyk.lastfmaf.presentation.pojos.imageLinkPersistence
 import com.gromyk.persistence.composedalbum.AlbumObject
 
 fun Album.toDBAlbum() = com.gromyk.persistence.album.Album(

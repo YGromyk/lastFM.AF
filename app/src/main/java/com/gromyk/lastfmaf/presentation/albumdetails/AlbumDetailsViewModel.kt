@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.gromyk.api.Api
 import com.gromyk.lastfmaf.domain.repository.AlbumRepository
 import com.gromyk.lastfmaf.helpers.isNotBlankAndEmpty
-import com.gromyk.lastfmaf.helpers.toAlbumObject
+import com.gromyk.lastfmaf.presentation.pojos.toAlbumObject
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
 import com.gromyk.lastfmaf.presentation.networkstate.onError
 import com.gromyk.persistence.composedalbum.AlbumObject
@@ -33,7 +33,7 @@ class AlbumDetailsViewModel : BaseViewModel() {
     }
 
     private fun fetchAlbumsInfo() = scope.launch {
-        if(!showErrorIsNoNetwork()) return@launch
+        if (!showErrorIsNoNetwork()) return@launch
         if (artist.isNotBlankAndEmpty() && album.isNotBlankAndEmpty()) {
             val albumResponse = api.artistService.getAlbumInfo(artist!!, album!!)
             if (albumResponse.isSuccessful) {
@@ -45,6 +45,8 @@ class AlbumDetailsViewModel : BaseViewModel() {
     }
 
     private fun fetchLocalAlbum() = scope.launch {
-        albumData.postValue(repository.getSavedAlbumBy(artist!!, album!!))
+        if (artist.isNotBlankAndEmpty() && album.isNotBlankAndEmpty()) {
+            albumData.postValue(repository.getSavedAlbumBy(artist!!, album!!))
+        }
     }
 }

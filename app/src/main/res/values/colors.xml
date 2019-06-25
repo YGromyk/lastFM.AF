@@ -6,6 +6,7 @@
     <color name="colorAccent">#FBC02D</color>
     <color name="layoutBackground">#FFEBEE</color>
 
+    <color name="white">#fff</color>
     <color name="textColorDark">#000</color>
     <color name="textColorLight">#fff</color>
 

@@ -12,7 +12,6 @@ import com.gromyk.lastfmaf.helpers.TimeHelper
 import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.FragmentParameters
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
-import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.navigation.Screen
 import com.gromyk.lastfmaf.presentation.pojos.imageLinkPersistence
 import com.gromyk.lastfmaf.presentation.songs.TrackAdapter
@@ -28,7 +27,7 @@ class AlbumDetailsFragment : BaseFragment() {
     private lateinit var adapter: TrackAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.album_details_fragment, container, false)
+            inflater.inflate(R.layout.album_details_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,8 +56,8 @@ class AlbumDetailsFragment : BaseFragment() {
         albumNameTextView.text = album.album.name
         albumSingerTextView.text = viewModel.artist
         durationTextView.text = TimeHelper.formatToMMSS(
-            album.tracks
-                .map { it.duration.toInt() }.sum()
+                album.tracks
+                        .map { it.duration.toInt() }.sum()
         )
         publishedDateTextView.text = album.wiki.published ?: "Unknown"
         adapter.replaceItems(album.tracks)
@@ -78,7 +77,7 @@ class AlbumDetailsFragment : BaseFragment() {
     private fun openInfo() {
         val url = viewModel.albumData.value?.album?.url
         val bundle = bundleOf(
-            FragmentParameters.URL to url
+                FragmentParameters.URL to url
         )
         navigator.navigateTo(Screen.OPEN_WEB, bundle)
     }
@@ -87,24 +86,14 @@ class AlbumDetailsFragment : BaseFragment() {
         arguments?.apply {
             val showAlertIfNullAndReturnValue = { str: String? ->
                 str ?: showError(
-                    getString(R.string.error),
-                    getString(R.string.you_have_to_select_album)
+                        getString(R.string.error),
+                        getString(R.string.you_have_to_select_album)
                 )
                 str
             }
             viewModel.artist = showAlertIfNullAndReturnValue(getString(FragmentParameters.ARTIST_KEY))
             viewModel.album = showAlertIfNullAndReturnValue(getString(FragmentParameters.ALBUM_KEY))
             viewModel.loadLocalData = getBoolean(FragmentParameters.LOAD_LOCAL_DATA)
-        }
-    }
-
-    companion object {
-        fun newInstance(
-            parameters: Bundle? = null,
-            navigator: Navigator
-        ) = AlbumDetailsFragment().apply {
-            arguments = parameters
-            this.navigator = navigator
         }
     }
 }
