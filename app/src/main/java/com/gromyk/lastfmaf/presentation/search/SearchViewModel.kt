@@ -16,6 +16,7 @@ class SearchViewModel : BaseViewModel() {
     var lastSearched = ""
 
     fun searchArtist(name: String) {
+        if (!showErrorIsNoNetwork()) return
         scope.launch {
             isResultReceived.postValue(false)
             val artists = api.searchService.searchArtist(name)

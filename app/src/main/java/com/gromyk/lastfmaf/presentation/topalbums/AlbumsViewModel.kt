@@ -7,6 +7,7 @@ import com.gromyk.api.dtos.topalbums.TopAlbum
 import com.gromyk.lastfmaf.domain.repository.AlbumRepository
 import com.gromyk.lastfmaf.helpers.*
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
+import com.gromyk.lastfmaf.presentation.networkstate.onError
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
 import com.gromyk.persistence.composedalbum.AlbumObject
 import com.gromyk.persistence.wiki.Wiki
@@ -30,10 +31,17 @@ class AlbumsViewModel : BaseViewModel() {
     var loadLocalData: Boolean = true
 
     private fun fetchArtistInfo() = scope.launch {
-        val artist = api.artistService.getArtistInfo(searchedArtist!!)
-        savedArtist = artist.artist
-        artistInfo.postValue(savedArtist)
-        repository.saveArtist(savedArtist.toDBArtist())
+        if(!showErrorIsNoNetwork()) return@launch
+        val artistResponse = api.artistService.getArtistInfo(searchedArtist!!)
+        if (artistResponse.isSuccessful) {
+            artistResponse.body()?.apply {
+                savedArtist = artist
+                artistInfo.postValue(savedArtist)
+                repository.saveArtist(savedArtist.toDBArtist())
+            }
+        } else {
+            networkState.onError(Throwable("Network error"))
+        }
     }
 
     fun fetchData() {
@@ -50,11 +58,18 @@ class AlbumsViewModel : BaseViewModel() {
     }
 
     private fun fetchTopAlbums() = scope.launch {
+        if(!showErrorIsNoNetwork()) return@launch
         val albumResponse = api.artistService.getTopAlbumsFor(searchedArtist!!)
-        savedAlbums.addAll(albumResponse.topAlbums.albums)
-        val loadedAlbums = savedAlbums.map { it.toAlbumUI() }
-        decorateLoadedAlbums(loadedAlbums)
-        topAlbums.postValue(loadedAlbums)
+        if (albumResponse.isSuccessful) {
+            albumResponse.body()?.apply {
+                savedAlbums.addAll(topAlbums.albums)
+                val loadedAlbums = savedAlbums.map { it.toAlbumUI() }
+                decorateLoadedAlbums(loadedAlbums)
+                this@AlbumsViewModel.topAlbums.postValue(loadedAlbums)
+            }
+        } else {
+            networkState.onError(Throwable("Network error"))
+        }
     }
 
     private fun fetchLocalData() {
@@ -62,11 +77,11 @@ class AlbumsViewModel : BaseViewModel() {
     }
 
     private fun getLocalAlbums() = repository.getLocalAlbums()
-        .map {
-            it.toAlbumUI(
-                repository.getArtistById(it.album.artistId)?.name ?: ""
-            )
-        }
+            .map {
+                it.toAlbumUI(
+                        repository.getArtistById(it.album.artistId)?.name ?: ""
+                )
+            }
 
     private fun decorateLoadedAlbums(loadedAlbums: List<AlbumUI>) {
         val localAlbums = getLocalAlbums()
@@ -80,17 +95,22 @@ class AlbumsViewModel : BaseViewModel() {
 
     fun saveAlbumAndArtist(name: String?, artist: String?) {
         scope.launch {
-            val albumDetails = repository.api.artistService.getAlbumInfo(artist!!, name!!)
+            if(!showErrorIsNoNetwork()) return@launch
+            val albumDetailsResponse = repository.api.artistService.getAlbumInfo(artist!!, name!!)
             val artistId = repository.saveArtist(savedArtist.toDBArtist())
-            albumDetails.album.let { album ->
-                val albumObject = AlbumObject(
-                    album.toDBAlbum().apply { this.artistId = artistId },
-                    album.wiki?.toDBWiki() ?: Wiki(),
-                    album.image.map { it.toDBImage() },
-                    album.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
-                    album.tags.tag?.map { it.toDBTag() } ?: emptyList()
-                )
-                repository.saveAlbum(albumObject)
+            if (albumDetailsResponse.isSuccessful) {
+                albumDetailsResponse.body()?.album?.let { album ->
+                    val albumObject = AlbumObject(
+                            album.toDBAlbum().apply { this.artistId = artistId },
+                            album.wiki?.toDBWiki() ?: Wiki(),
+                            album.image.map { it.toDBImage() },
+                            album.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
+                            album.tags.tag?.map { it.toDBTag() } ?: emptyList()
+                    )
+                    repository.saveAlbum(albumObject)
+                }
+            } else {
+                networkState.onError(Throwable("Network error"))
             }
         }
     }

@@ -8,6 +8,7 @@ import org.koin.dsl.KoinAppDeclaration
 class App: Application() {
     override fun onCreate() {
         super.onCreate()
+        instance = this
         initKoin()
     }
 
@@ -21,5 +22,11 @@ class App: Application() {
             androidContext(this@App)
             modules(modules)
         }
+    }
+
+    companion object {
+        private lateinit var instance: App
+
+        fun getApp() = instance
     }
 }

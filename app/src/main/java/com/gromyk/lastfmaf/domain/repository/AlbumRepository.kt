@@ -2,9 +2,9 @@ package com.gromyk.lastfmaf.domain.repository
 
 import com.gromyk.api.Api
 import com.gromyk.lastfmaf.helpers.clearAndInsert
+import com.gromyk.persistence.artist.Artist
 import com.gromyk.persistence.composedalbum.AlbumObject
 import com.gromyk.persistence.db.AppDatabase
-import com.gromyk.persistence.artist.Artist
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 

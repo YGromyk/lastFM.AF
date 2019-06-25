@@ -7,19 +7,20 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.KoinComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object ApiFactory : KoinComponent {
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url()
-            .newBuilder()
-            .addEncodedQueryParameter("api_key", BuildConfig.API_KEY)
-            .addEncodedQueryParameter("format", "json")
-            .build()
+                .newBuilder()
+                .addEncodedQueryParameter("api_key", BuildConfig.API_KEY)
+                .addEncodedQueryParameter("format", "json")
+                .build()
 
         val newRequest = chain.request()
-            .newBuilder()
-            .url(newUrl)
-            .build()
+                .newBuilder()
+                .url(newUrl)
+                .build()
         chain.proceed(newRequest)
     }
 
@@ -28,16 +29,19 @@ object ApiFactory : KoinComponent {
     }
 
     private val lastFmClient =
-        OkHttpClient()
-            .newBuilder()
-            .addInterceptor(authInterceptor)
-            .addInterceptor(loggingInterceptor)
-            .build()
+            OkHttpClient()
+                    .newBuilder()
+                    .addInterceptor(authInterceptor)
+                    .retryOnConnectionFailure(true)
+                    .writeTimeout(15_000, TimeUnit.MILLISECONDS)
+                    .readTimeout(15_000, TimeUnit.MILLISECONDS)
+                    .addInterceptor(loggingInterceptor)
+                    .build()
 
     fun retrofit(): Retrofit = Retrofit.Builder()
-        .client(lastFmClient)
-        .baseUrl(BaseUrl.BASE_REST_URL)
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+            .client(lastFmClient)
+            .baseUrl(BaseUrl.BASE_REST_URL)
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 }

@@ -43,6 +43,7 @@ dependencies {
     val picassoVersion = "2.71828"
     val expandableLayoutVersion = "2.9.2"
     val roomVersion = "2.0.1"
+    val retrofitConverterVersion = "2.6.0"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     api(project(":api"))
@@ -81,6 +82,10 @@ dependencies {
     implementation("android.arch.persistence.room:runtime:$roomVersion")
     kapt("android.arch.persistence.room:compiler:$roomVersion")
     androidTestImplementation("android.arch.persistence.room:testing:$roomVersion")
+
+    // rest
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitConverterVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:3.14.2")
 
     // tests
     testImplementation("junit:junit:4.12")

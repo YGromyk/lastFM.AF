@@ -6,6 +6,7 @@ import com.gromyk.lastfmaf.domain.repository.AlbumRepository
 import com.gromyk.lastfmaf.helpers.isNotBlankAndEmpty
 import com.gromyk.lastfmaf.helpers.toAlbumObject
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
+import com.gromyk.lastfmaf.presentation.networkstate.onError
 import com.gromyk.persistence.composedalbum.AlbumObject
 import kotlinx.coroutines.launch
 import org.koin.core.inject
@@ -32,9 +33,14 @@ class AlbumDetailsViewModel : BaseViewModel() {
     }
 
     private fun fetchAlbumsInfo() = scope.launch {
+        if(!showErrorIsNoNetwork()) return@launch
         if (artist.isNotBlankAndEmpty() && album.isNotBlankAndEmpty()) {
             val albumResponse = api.artistService.getAlbumInfo(artist!!, album!!)
-            albumData.postValue(albumResponse.album.toAlbumObject())
+            if (albumResponse.isSuccessful) {
+                albumData.postValue(albumResponse.body()?.album?.toAlbumObject())
+            } else {
+                networkState.onError(Throwable("Network error"))
+            }
         }
     }
 
