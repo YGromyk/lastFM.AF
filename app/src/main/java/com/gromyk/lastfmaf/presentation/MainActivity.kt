@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
@@ -13,10 +12,7 @@ import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.navigation.Screen
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(),
-        Navigator {
-    private var isFirstActive = true
-
+class MainActivity : AppCompatActivity(), Navigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,22 +26,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onSupportNavigateUp() =
-            Navigation.findNavController(this, R.id.mainNavigationFragment).navigateUp()
-
-    private fun startFragment(fragment: Fragment, addToBackStack: Boolean = false) {
-        val tag = fragment::class.java.simpleName
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        supportFragmentManager.findFragmentByTag(tag)?.let { foundFragment ->
-            fragmentTransaction.remove(foundFragment)
-        }
-        fragmentTransaction
-                .add(R.id.mainNavigationFragment, fragment, tag)
-                .apply {
-                    if (addToBackStack)
-                        addToBackStack(null)
-                }
-                .commit()
-    }
+        Navigation.findNavController(this, R.id.mainNavigationFragment).navigateUp()
 
     override fun navigateTo(screen: Int, parameters: Bundle?) {
         when (screen) {
