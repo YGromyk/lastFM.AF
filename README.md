@@ -1,6 +1,6 @@
-# LastFM
+# LastFM.AF
 
-**Simple app to browse albums-library on Last.FM**
+**Simple app to browse albums on Last.FM**
 
 *To build project you need to:*
 
@@ -17,9 +17,9 @@ https://www.last.fm/api/authentication
 
 *Used libraries:*
 
-- Retrofit
-- Kotlin Coroutines
-- Room Persistence Library
-- ViewModels & LiveData
-- Jetpack Navigation
-- Koin
+- Retrofit;
+- Kotlin Coroutines;
+- Room Persistence Library;
+- ViewModels & LiveData;
+- Jetpack Navigation;
+- Koin.
