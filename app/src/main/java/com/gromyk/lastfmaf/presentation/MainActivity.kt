@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(),
     Navigator,
     BottomNavigationView.OnNavigationItemSelectedListener {
+    private var isFirstActive = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,16 +46,18 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    override fun openWebPage(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(intent)
-    }
-
     override fun navigateTo(screen: Int, parameters: Bundle?) {
         when (screen) {
-            Screen.ARTIST_DETAILS -> startFragment(AlbumsFragment.newInstance(parameters, this))
-            Screen.ALBUM_DETAILS -> startFragment(AlbumDetailsFragment.newInstance(parameters, this))
+            Screen.ARTIST_DETAILS -> {
+                    startFragment(AlbumsFragment.newInstance(parameters, this))
+            }
+            Screen.ALBUM_DETAILS -> {
+                startFragment(AlbumDetailsFragment.newInstance(parameters, this))
+            }
             Screen.OPEN_WEB -> {
+                val url = parameters?.getString(FragmentParameters.URL)
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
             }
         }
     }
@@ -69,10 +72,12 @@ class MainActivity : AppCompatActivity(),
         return when (menuItem.itemId) {
             R.id.action_local_top -> {
                 startFragment(AlbumsFragment.newInstance(navigator = this))
+                isFirstActive = true
                 true
             }
             R.id.action_search -> {
                 startFragment(SearchFragment.newInstance())
+                isFirstActive = false
                 true
             }
             else -> false

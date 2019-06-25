@@ -32,7 +32,7 @@ abstract class BaseFragment : Fragment() {
         viewModel.networkState.observe(this, Observer(::onNetworkStateChanged))
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Navigator) // sorry :(
             navigator = context

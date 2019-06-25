@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gromyk.lastfmaf.R
@@ -12,6 +13,7 @@ import com.gromyk.lastfmaf.helpers.loadPhoto
 import com.gromyk.lastfmaf.presentation.FragmentParameters
 import com.gromyk.lastfmaf.presentation.base.BaseFragment
 import com.gromyk.lastfmaf.presentation.navigation.Navigator
+import com.gromyk.lastfmaf.presentation.navigation.Screen
 import com.gromyk.lastfmaf.presentation.pojos.imageLinkPersistence
 import com.gromyk.lastfmaf.presentation.songs.TrackAdapter
 import com.gromyk.lastfmaf.presentation.views.PlaceholderType
@@ -75,7 +77,10 @@ class AlbumDetailsFragment : BaseFragment() {
 
     private fun openInfo() {
         val url = viewModel.albumData.value?.album?.url
-        navigator.openWebPage(url ?: return)
+        val bundle = bundleOf(
+            FragmentParameters.URL to url
+        )
+        navigator.navigateTo(Screen.OPEN_WEB, bundle)
     }
 
     private fun getExtras() {
