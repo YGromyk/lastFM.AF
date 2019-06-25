@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">LastFM.AF</string>
+    <string name="save">Save</string>
+    <string name="info">Info</string>
+    <string name="error">Error</string>
+    <string name="you_have_to_select_album">You have to select album before</string>
+    <string name="search" translatable="false">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="input_artist_name">Input artist name</string>
 </resources>
