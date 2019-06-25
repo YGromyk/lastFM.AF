@@ -22,6 +22,8 @@ import kotlinx.android.synthetic.main.artist_info.*
 import kotlinx.android.synthetic.main.list_content.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import android.content.res.Configuration
+
 
 class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
     override val viewModel by viewModel<AlbumsViewModel>()
@@ -51,7 +53,7 @@ class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
     private fun initView() {
         adapter = AlbumsAdapter(this)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(this.context, 2)
+        recyclerView.layoutManager = GridLayoutManager(this.context, getSpanCount())
         swipeRefreshLayout.setOnRefreshListener {
             if (viewModel.isResultReceived.value == true)
                 viewModel.fetchData()
@@ -123,6 +125,15 @@ class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         getNavController()?.navigate(action, bundle)
     }
 
+    private fun getSpanCount(): Int {
+        val currentOrientation = resources.configuration.orientation
+        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return LANDSCAPE_SPAN_COUNT
+        } else {
+            return PORTRAIT_SPAN_COUNT
+        }
+    }
+
     private fun getExtras() {
         arguments?.apply {
             getString(FragmentParameters.ARTIST_KEY)?.let {
@@ -130,6 +141,11 @@ class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
                 viewModel.loadLocalData = false
             }
         }
+    }
+
+    companion object {
+        private const val PORTRAIT_SPAN_COUNT = 2
+        private const val LANDSCAPE_SPAN_COUNT = 3
     }
 
 }
