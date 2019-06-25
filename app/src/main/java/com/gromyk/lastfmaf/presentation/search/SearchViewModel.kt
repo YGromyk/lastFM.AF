@@ -13,12 +13,15 @@ class SearchViewModel : BaseViewModel() {
     val artistsData = MutableLiveData<List<Artist>>()
     val isResultReceived = MutableLiveData<Boolean>()
 
+    var lastSearched = ""
+
     fun searchArtist(name: String) {
         scope.launch {
             isResultReceived.postValue(false)
             val artists = api.searchService.searchArtist(name)
             artistsData.postValue(artists?.results?.artistMatches?.artist ?: emptyList())
             isResultReceived.postValue(true)
+            lastSearched = name
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.gromyk.lastfmaf.presentation.topalbums
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -20,23 +19,25 @@ import com.gromyk.lastfmaf.presentation.base.BaseFragment
 import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.pojos.AlbumUI
 import com.gromyk.lastfmaf.presentation.pojos.imageLinkAPI
+import com.gromyk.lastfmaf.presentation.views.PlaceholderType
+import kotlinx.android.synthetic.main.albums_fragment.*
 import kotlinx.android.synthetic.main.artist_info.*
+import kotlinx.android.synthetic.main.list_content.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
-import kotlinx.android.synthetic.main.top_albums_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
-    private val viewModel by viewModel<AlbumsViewModel>()
+    override val viewModel by viewModel<AlbumsViewModel>()
     private lateinit var adapter: AlbumsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.top_albums_fragment, container, false)
+        return inflater.inflate(R.layout.albums_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         getExtras()
+        initView()
         subscribeOnLiveDataVM()
         viewModel.fetchData()
     }
@@ -65,25 +66,31 @@ class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
         }
         if (viewModel.loadLocalData) {
             artistInfoLayout.visibility = View.GONE
+        } else {
+            artistInfoLayout.visibility = View.VISIBLE
         }
     }
 
     private fun onAlbumsLoaded(albums: List<AlbumUI>) {
         swipeRefreshLayout.isRefreshing = false
         adapter.replaceItems(albums)
+        val itemsCount = albums.count()
+        placeholder?.showPlaceholder(itemsCount, PlaceholderType.NO_ALBUMS)
+        if (itemsCount == 0)
+            swipeRefreshLayout.visibility = View.GONE
+        else
+            swipeRefreshLayout.visibility = View.VISIBLE
     }
 
     private fun onTopAlbumsLoaded(areTopAlbumsLoaded: Boolean) {
         if (areTopAlbumsLoaded) {
             progressBar.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
         } else {
             progressBar.visibility = View.VISIBLE
-            recyclerView.visibility = View.GONE
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @Suppress("Warnings")
     private fun onArtistLoaded(artist: Artist) {
         artistImageView.loadPhoto(artist.image?.imageLinkAPI() ?: "")
         singerTextView.text = "Artist: ${artist.name}"
@@ -107,15 +114,15 @@ class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
 
     override fun openAlbumDetails(albumUI: AlbumUI) {
         val bundle = bundleOf(
-            FragmentParameters.ALBUM_KEY to albumUI.name,
-            FragmentParameters.ARTIST_KEY to albumUI.artist,
-            FragmentParameters.LOAD_LOCAL_DATA to viewModel.loadLocalData
+                FragmentParameters.ALBUM_KEY to albumUI.name,
+                FragmentParameters.ARTIST_KEY to albumUI.artist,
+                FragmentParameters.LOAD_LOCAL_DATA to viewModel.loadLocalData
         )
         val fragment = AlbumDetailsFragment.newInstance(bundle, navigator)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.add(R.id.fragmentContainer, fragment)
-            ?.addToBackStack(AlbumDetailsFragment::class.java.simpleName)
-            ?.commit()
+                ?.add(R.id.fragmentContainer, fragment)
+                ?.addToBackStack(AlbumDetailsFragment::class.java.simpleName)
+                ?.commit()
     }
 
     private fun getExtras() {
@@ -129,8 +136,8 @@ class AlbumsFragment : BaseFragment(), AlbumsAdapter.OnSaveAlbum {
 
     companion object {
         fun newInstance(
-            parameters: Bundle? = null,
-            navigator: Navigator
+                parameters: Bundle? = null,
+                navigator: Navigator
         ) = AlbumsFragment().apply {
             arguments = parameters
             this.navigator = navigator

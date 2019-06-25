@@ -14,13 +14,15 @@ import com.gromyk.lastfmaf.presentation.base.BaseFragment
 import com.gromyk.lastfmaf.presentation.navigation.Navigator
 import com.gromyk.lastfmaf.presentation.pojos.imageLinkPersistence
 import com.gromyk.lastfmaf.presentation.songs.TrackAdapter
+import com.gromyk.lastfmaf.presentation.views.PlaceholderType
 import com.gromyk.persistence.composedalbum.AlbumObject
 import kotlinx.android.synthetic.main.album_details_fragment.*
+import kotlinx.android.synthetic.main.list_content.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AlbumDetailsFragment : BaseFragment() {
-    private val viewModel by viewModel<AlbumDetailsViewModel>()
+    override val viewModel by viewModel<AlbumDetailsViewModel>()
     private lateinit var adapter: TrackAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -36,8 +38,8 @@ class AlbumDetailsFragment : BaseFragment() {
 
     private fun initView() {
         adapter = TrackAdapter()
-        songsRecyclerView.layoutManager = LinearLayoutManager(context)
-        songsRecyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
         infoButton.setOnClickListener { openInfo() }
     }
 
@@ -58,6 +60,7 @@ class AlbumDetailsFragment : BaseFragment() {
         )
         publishedDateTextView.text = album.wiki.published ?: "Unknown"
         adapter.replaceItems(album.tracks)
+        placeholder?.showPlaceholder(album.tracks.count(), PlaceholderType.NO_SONGS)
     }
 
     private fun onAlbumIsLoaded(isLoaded: Boolean) {
@@ -67,7 +70,6 @@ class AlbumDetailsFragment : BaseFragment() {
         } else {
             progressBar.visibility = View.VISIBLE
         }
-        saveButton.visibility = buttonsVisibility
         infoButton.visibility = buttonsVisibility
     }
 
