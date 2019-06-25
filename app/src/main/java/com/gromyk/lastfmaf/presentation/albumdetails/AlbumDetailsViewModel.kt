@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import org.koin.core.inject
 
 class AlbumDetailsViewModel : BaseViewModel() {
-    private val api: Api by inject()
     private val repository: AlbumRepository by inject()
 
     val albumData = MutableLiveData<AlbumObject>()
@@ -35,7 +34,7 @@ class AlbumDetailsViewModel : BaseViewModel() {
     private fun fetchAlbumsInfo() = scope.launch {
         if (!showErrorIsNoNetwork()) return@launch
         if (artist.isNotBlankAndEmpty() && album.isNotBlankAndEmpty()) {
-            val albumResponse = api.artistService.getAlbumInfo(artist!!, album!!)
+            val albumResponse = repository.getAlbumInfo(artist!!, album!!)
             if (albumResponse.isSuccessful) {
                 albumData.postValue(albumResponse.body()?.album?.toAlbumObject())
             } else {

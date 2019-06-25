@@ -96,7 +96,7 @@ class AlbumsViewModel : BaseViewModel() {
     fun saveAlbumAndArtist(name: String?, artist: String?) {
         scope.launch {
             if (!showErrorIsNoNetwork()) return@launch
-            val albumDetailsResponse = repository.api.artistService.getAlbumInfo(artist!!, name!!)
+            val albumDetailsResponse = repository.getAlbumInfo(artist!!, name!!)
             val artistId = repository.saveArtist(savedArtist.toDBArtist())
             if (albumDetailsResponse.isSuccessful) {
                 albumDetailsResponse.body()?.album?.let { album ->

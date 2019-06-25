@@ -9,7 +9,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class AlbumRepository : KoinComponent {
-    val api: Api by inject()
+    private val api: Api by inject()
     private val database: AppDatabase by inject()
 
     private val localAlbums = mutableListOf<AlbumObject>()
@@ -21,7 +21,6 @@ class AlbumRepository : KoinComponent {
         return localAlbums
     }
 
-    // return id of artist
     fun saveArtist(artist: Artist): Long {
         val artists = database.getAllArtists()
         artists.find { it.url == artist.url }?.let {
@@ -59,4 +58,9 @@ class AlbumRepository : KoinComponent {
                 it.album.artistId == artist.id && it.album.name == albumName
             }
     }
+
+    suspend fun getAlbumInfo(artist: String, name: String) =
+        api.artistService.getAlbumInfo(artist, name)
+
+    suspend fun searchArtistBy(name: String) = api.searchService.searchArtist(name)
 }
