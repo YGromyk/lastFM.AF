@@ -95,5 +95,9 @@ abstract class AppDatabase : RoomDatabase() {
         albumObject.tracks.forEach {
             tracksDAO.remove(it)
         }
+        albumObject.tags.forEach {
+            tagsDAO.remove(it)
+        }
+        wikiDAO.remove(albumObject.wiki)
     }
 }
