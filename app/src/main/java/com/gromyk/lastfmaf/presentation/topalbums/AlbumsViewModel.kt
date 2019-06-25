@@ -31,7 +31,7 @@ class AlbumsViewModel : BaseViewModel() {
     var loadLocalData: Boolean = true
 
     private fun fetchArtistInfo() = scope.launch {
-        if(!showErrorIsNoNetwork()) return@launch
+        if (!showErrorIsNoNetwork()) return@launch
         val artistResponse = api.artistService.getArtistInfo(searchedArtist!!)
         if (artistResponse.isSuccessful) {
             artistResponse.body()?.apply {
@@ -58,7 +58,7 @@ class AlbumsViewModel : BaseViewModel() {
     }
 
     private fun fetchTopAlbums() = scope.launch {
-        if(!showErrorIsNoNetwork()) return@launch
+        if (!showErrorIsNoNetwork()) return@launch
         val albumResponse = api.artistService.getTopAlbumsFor(searchedArtist!!)
         if (albumResponse.isSuccessful) {
             albumResponse.body()?.apply {
@@ -77,11 +77,11 @@ class AlbumsViewModel : BaseViewModel() {
     }
 
     private fun getLocalAlbums() = repository.getLocalAlbums()
-            .map {
-                it.toAlbumUI(
-                        repository.getArtistById(it.album.artistId)?.name ?: ""
-                )
-            }
+        .map {
+            it.toAlbumUI(
+                repository.getArtistById(it.album.artistId)?.name ?: ""
+            )
+        }
 
     private fun decorateLoadedAlbums(loadedAlbums: List<AlbumUI>) {
         val localAlbums = getLocalAlbums()
@@ -95,17 +95,17 @@ class AlbumsViewModel : BaseViewModel() {
 
     fun saveAlbumAndArtist(name: String?, artist: String?) {
         scope.launch {
-            if(!showErrorIsNoNetwork()) return@launch
+            if (!showErrorIsNoNetwork()) return@launch
             val albumDetailsResponse = repository.api.artistService.getAlbumInfo(artist!!, name!!)
             val artistId = repository.saveArtist(savedArtist.toDBArtist())
             if (albumDetailsResponse.isSuccessful) {
                 albumDetailsResponse.body()?.album?.let { album ->
                     val albumObject = AlbumObject(
-                            album.toDBAlbum().apply { this.artistId = artistId },
-                            album.wiki?.toDBWiki() ?: Wiki(),
-                            album.image.map { it.toDBImage() },
-                            album.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
-                            album.tags.tag?.map { it.toDBTag() } ?: emptyList()
+                        album.toDBAlbum().apply { this.artistId = artistId },
+                        album.wiki?.toDBWiki() ?: Wiki(),
+                        album.image.map { it.toDBImage() },
+                        album.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
+                        album.tags.tag?.map { it.toDBTag() } ?: emptyList()
                     )
                     repository.saveAlbum(albumObject)
                 }
@@ -118,7 +118,8 @@ class AlbumsViewModel : BaseViewModel() {
     fun removeAlbum(name: String?, artist: String?) {
         scope.launch {
             repository.removeAlbumBy(artist!!, name!!)
-            fetchLocalData()
+            if (loadLocalData)
+                fetchLocalData()
         }
     }
 }
