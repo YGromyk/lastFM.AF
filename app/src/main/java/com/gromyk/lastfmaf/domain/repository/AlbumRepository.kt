@@ -62,5 +62,6 @@ class AlbumRepository : KoinComponent {
     suspend fun getAlbumInfo(artist: String, name: String) =
         api.artistService.getAlbumInfo(artist, name)
 
-    suspend fun searchArtistBy(name: String) = api.searchService.searchArtist(name)
+    suspend fun searchArtistBy(name: String) =
+        api.searchService.searchArtist(name)
 }

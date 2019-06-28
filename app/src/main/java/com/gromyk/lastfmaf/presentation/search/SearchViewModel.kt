@@ -1,7 +1,6 @@
 package com.gromyk.lastfmaf.presentation.search
 
 import androidx.lifecycle.MutableLiveData
-import com.gromyk.api.Api
 import com.gromyk.api.dtos.artist.Artist
 import com.gromyk.lastfmaf.domain.repository.AlbumRepository
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
