@@ -1,6 +1,6 @@
 package com.gromyk.lastfmaf.di
 
-import com.gromyk.lastfmaf.domain.repository.AlbumRepository
+import com.gromyk.lastfmaf.domain.repository.DataRepository
 import com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsViewModel
 import com.gromyk.lastfmaf.presentation.search.SearchViewModel
 import com.gromyk.lastfmaf.presentation.albums.AlbumsViewModel
@@ -17,5 +17,5 @@ val viewModels = module {
 
 val repository = module {
     single { DatabaseBuilder.buildDatabase(androidContext(), "appDB") }
-    single { AlbumRepository() }
+    single { DataRepository() }
 }

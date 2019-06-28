@@ -1,6 +1,11 @@
 package com.gromyk.lastfmaf.domain.repository
 
 import com.gromyk.api.Api
+import com.gromyk.api.OnResponse
+import com.gromyk.api.dtos.album.AlbumResponse
+import com.gromyk.api.dtos.artist.ArtistInfo
+import com.gromyk.api.dtos.search.SearchArtistResponse
+import com.gromyk.api.dtos.topalbums.TopAlbums
 import com.gromyk.lastfmaf.helpers.clearAndInsert
 import com.gromyk.persistence.artist.Artist
 import com.gromyk.persistence.composedalbum.AlbumObject
@@ -8,12 +13,11 @@ import com.gromyk.persistence.db.AppDatabase
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class AlbumRepository : KoinComponent {
+class DataRepository : KoinComponent {
     private val api: Api by inject()
     private val database: AppDatabase by inject()
 
     private val localAlbums = mutableListOf<AlbumObject>()
-
 
     fun getLocalAlbums(): List<AlbumObject> {
         val albums = database.getAllAlbums().toMutableList()
@@ -59,9 +63,47 @@ class AlbumRepository : KoinComponent {
             }
     }
 
-    suspend fun getAlbumInfo(artist: String, name: String) =
-        api.artistService.getAlbumInfo(artist, name)
+    suspend fun getAlbumInfo(
+        artist: String,
+        name: String,
+        onResponse: OnResponse<AlbumResponse>
+    ) {
+        try {
+            val response = api.artistService.getAlbumInfo(artist, name)!!
+            onResponse.onSuccess(response)
+        } catch (exception: Exception) {
+            onResponse.onError(exception)
+        }
+    }
 
-    suspend fun searchArtistBy(name: String) =
-        api.searchService.searchArtist(name)
+    suspend fun searchArtistBy(
+        name: String,
+        onResponse: OnResponse<SearchArtistResponse>
+    ) {
+        try {
+            val searchResponse = api.searchService.searchArtist(name)!!
+            onResponse.onSuccess(searchResponse)
+        } catch (exception: Exception) {
+            onResponse.onError(exception)
+        }
+    }
+
+    suspend fun getArtistInfo(name: String, onResponse: OnResponse<ArtistInfo>) {
+        try {
+            val artistInfo = api.artistService.getArtistInfo(name)
+            onResponse.onSuccess(artistInfo)
+        } catch (exception: Exception) {
+            onResponse.onError(exception)
+        }
+    }
+
+    suspend fun getTopAlbumsFor(name: String, onResponse: OnResponse<TopAlbums>) {
+        try {
+            val artistInfo = api.artistService.getTopAlbumsFor(name)
+            onResponse.onSuccess(artistInfo.topAlbums)
+        } catch (exception: Exception) {
+            onResponse.onError(exception)
+        }
+    }
+
 }

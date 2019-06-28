@@ -1,7 +1,9 @@
 package com.gromyk.lastfmaf.presentation.albumdetails
 
 import androidx.lifecycle.MutableLiveData
-import com.gromyk.lastfmaf.domain.repository.AlbumRepository
+import com.gromyk.api.OnResponse
+import com.gromyk.api.dtos.album.AlbumResponse
+import com.gromyk.lastfmaf.domain.repository.DataRepository
 import com.gromyk.lastfmaf.helpers.isNotBlankAndEmpty
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
 import com.gromyk.lastfmaf.presentation.networkstate.onError
@@ -11,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.inject
 
 class AlbumDetailsViewModel : BaseViewModel() {
-    private val repository: AlbumRepository by inject()
+    private val repository: DataRepository by inject()
 
     val albumData = MutableLiveData<AlbumObject>()
     val isAlbumLoaded = MutableLiveData<Boolean>()
@@ -33,12 +35,15 @@ class AlbumDetailsViewModel : BaseViewModel() {
     private fun fetchAlbumsInfo() = scope.launch {
         if (!showErrorIsNoNetwork()) return@launch
         if (artist.isNotBlankAndEmpty() && album.isNotBlankAndEmpty()) {
-            val albumResponse = repository.getAlbumInfo(artist!!, album!!)
-            if (albumResponse.isSuccessful) {
-                albumData.postValue(albumResponse.body()?.album?.toAlbumObject())
-            } else {
-                networkState.onError(Throwable("Network error"))
-            }
+            repository.getAlbumInfo(artist!!, album!!, object : OnResponse<AlbumResponse> {
+                override fun onSuccess(responseBody: AlbumResponse) {
+                    albumData.postValue(responseBody.album.toAlbumObject())
+                }
+
+                override fun onError(exception: Exception) {
+                    networkState.onError(Throwable("Network error"))
+                }
+            })
         }
     }
 
