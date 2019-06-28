@@ -26,7 +26,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -43,7 +46,7 @@ dependencies {
     val timberVersion = "4.7.1"
     val picassoVersion = "2.71828"
     val expandableLayoutVersion = "2.9.2"
-    val roomVersion = "2.0.1"
+    val roomVersion = "2.1.0"
     val retrofitConverterVersion = "2.6.0"
     val navigationVersion = "1.0.0"
 
@@ -54,7 +57,6 @@ dependencies {
     // ui
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:1.0.2")
-    implementation("com.android.support:design:28.0.0")
     implementation("androidx.core:core-ktx:1.0.2")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha06")
@@ -90,8 +92,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:3.14.2")
 
     // navigation
-    implementation ("android.arch.navigation:navigation-fragment-ktx:$navigationVersion")
-    implementation ("android.arch.navigation:navigation-ui-ktx:$navigationVersion")
+    implementation("android.arch.navigation:navigation-fragment-ktx:$navigationVersion")
+    implementation("android.arch.navigation:navigation-ui-ktx:$navigationVersion")
 
     // tests
     testImplementation("junit:junit:4.12")
