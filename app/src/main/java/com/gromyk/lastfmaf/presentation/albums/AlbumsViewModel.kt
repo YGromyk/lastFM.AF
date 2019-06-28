@@ -1,10 +1,13 @@
 package com.gromyk.lastfmaf.presentation.albums
 
 import androidx.lifecycle.MutableLiveData
-import com.gromyk.api.Api
+import com.gromyk.api.OnResponse
+import com.gromyk.api.dtos.album.AlbumResponse
 import com.gromyk.api.dtos.artist.Artist
+import com.gromyk.api.dtos.artist.ArtistInfo
 import com.gromyk.api.dtos.topalbums.TopAlbum
-import com.gromyk.lastfmaf.domain.repository.AlbumRepository
+import com.gromyk.api.dtos.topalbums.TopAlbums
+import com.gromyk.lastfmaf.domain.repository.DataRepository
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
 import com.gromyk.lastfmaf.presentation.networkstate.onError
 import com.gromyk.lastfmaf.presentation.pojos.*
@@ -14,8 +17,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.inject
 
 class AlbumsViewModel : BaseViewModel() {
-    private val api: Api by inject()
-    private val repository: AlbumRepository by inject()
+    private val repository: DataRepository by inject()
 
     val topAlbums = MutableLiveData<List<AlbumUI>>()
     val artistInfo = MutableLiveData<Artist>()
@@ -31,15 +33,18 @@ class AlbumsViewModel : BaseViewModel() {
 
     private fun fetchArtistInfo() = scope.launch {
         if (!showErrorIsNoNetwork()) return@launch
-        val artistResponse = api.artistService.getArtistInfo(searchedArtist!!)
-        if (artistResponse.isSuccessful) {
-            artistResponse.body()?.apply {
-                savedArtist = artist
-                artistInfo.postValue(savedArtist)
-                repository.saveArtist(savedArtist.toDBArtist())
-            }
-        } else {
-            networkState.onError(Throwable("Network error"))
+        searchedArtist?.let {
+            repository.getArtistInfo(it, onResponse = object : OnResponse<ArtistInfo> {
+                override fun onSuccess(responseBody: ArtistInfo) {
+                    savedArtist = responseBody.artist
+                    artistInfo.postValue(savedArtist)
+                    repository.saveArtist(savedArtist.toDBArtist())
+                }
+
+                override fun onError(exception: Exception) {
+                    networkState.onError(Throwable("Network error"))
+                }
+            })
         }
     }
 
@@ -58,17 +63,18 @@ class AlbumsViewModel : BaseViewModel() {
 
     private fun fetchTopAlbums() = scope.launch {
         if (!showErrorIsNoNetwork()) return@launch
-        val albumResponse = api.artistService.getTopAlbumsFor(searchedArtist!!)
-        if (albumResponse.isSuccessful) {
-            albumResponse.body()?.apply {
-                savedAlbums.addAll(topAlbums.albums)
+        repository.getTopAlbumsFor(searchedArtist!!, object : OnResponse<TopAlbums> {
+            override fun onSuccess(responseBody: TopAlbums) {
+                savedAlbums.addAll(responseBody.albums)
                 val loadedAlbums = savedAlbums.map { it.toAlbumUI() }
                 decorateLoadedAlbums(loadedAlbums)
                 this@AlbumsViewModel.topAlbums.postValue(loadedAlbums)
             }
-        } else {
-            networkState.onError(Throwable("Network error"))
-        }
+
+            override fun onError(exception: Exception) {
+                networkState.onError(Throwable("Network error"))
+            }
+        })
     }
 
     private fun fetchLocalData() {
@@ -76,12 +82,12 @@ class AlbumsViewModel : BaseViewModel() {
     }
 
     private fun getLocalAlbums() = repository.getLocalAlbums()
-            .toMutableList()
-            .map {
-                it.toAlbumUI(
-                        repository.getArtistById(it.album.artistId)?.name ?: ""
-                )
-            }
+        .toMutableList()
+        .map {
+            it.toAlbumUI(
+                repository.getArtistById(it.album.artistId)?.name ?: ""
+            )
+        }
 
     private fun decorateLoadedAlbums(loadedAlbums: List<AlbumUI>) {
         val localAlbums = getLocalAlbums()
@@ -93,25 +99,28 @@ class AlbumsViewModel : BaseViewModel() {
     }
 
 
-    fun saveAlbumAndArtist(name: String?, artist: String?) {
+    fun saveAlbumAndArtist(album: String?, artist: String?) {
         scope.launch {
             if (!showErrorIsNoNetwork()) return@launch
-            val albumDetailsResponse = repository.getAlbumInfo(artist!!, name!!)
-            val artistId = repository.saveArtist(savedArtist.toDBArtist())
-            if (albumDetailsResponse.isSuccessful) {
-                albumDetailsResponse.body()?.album?.let { album ->
-                    val albumObject = AlbumObject(
+            repository.getAlbumInfo(artist!!, album!!, object : OnResponse<AlbumResponse> {
+                override fun onSuccess(responseBody: AlbumResponse) {
+                    responseBody.album.let { album ->
+                        val artistId = repository.saveArtist(savedArtist.toDBArtist())
+                        val albumObject = AlbumObject(
                             album.toDBAlbum().apply { this.artistId = artistId },
                             album.wiki?.toDBWiki() ?: Wiki(),
                             album.image.map { it.toDBImage() },
                             album.tracks.track?.map { it.toDBTrack() } ?: emptyList(),
                             album.tags.tag?.map { it.toDBTag() } ?: emptyList()
-                    )
-                    repository.saveAlbum(albumObject)
+                        )
+                        repository.saveAlbum(albumObject)
+                    }
                 }
-            } else {
-                networkState.onError(Throwable("Network error"))
-            }
+
+                override fun onError(exception: Exception) {
+                    networkState.onError(Throwable("Network error"))
+                }
+            })
         }
     }
 

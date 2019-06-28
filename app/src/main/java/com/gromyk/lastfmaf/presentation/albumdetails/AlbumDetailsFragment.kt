@@ -17,17 +17,19 @@ import com.gromyk.lastfmaf.presentation.pojos.imageLinkPersistence
 import com.gromyk.lastfmaf.presentation.songs.TrackAdapter
 import com.gromyk.lastfmaf.presentation.views.PlaceholderType
 import com.gromyk.persistence.composedalbum.AlbumObject
+import com.gromyk.persistence.track.Track
 import kotlinx.android.synthetic.main.album_details_fragment.*
 import kotlinx.android.synthetic.main.list_content.*
 import kotlinx.android.synthetic.main.progress_bar_layout.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AlbumDetailsFragment : BaseFragment() {
+class AlbumDetailsFragment : BaseFragment(),
+    TrackAdapter.OnYouTubeClicked {
     override val viewModel by viewModel<AlbumDetailsViewModel>()
     private lateinit var adapter: TrackAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.album_details_fragment, container, false)
+        inflater.inflate(R.layout.album_details_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,7 +40,7 @@ class AlbumDetailsFragment : BaseFragment() {
     }
 
     private fun initView() {
-        adapter = TrackAdapter()
+        adapter = TrackAdapter(this)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
         infoButton.setOnClickListener { openInfo() }
@@ -56,8 +58,8 @@ class AlbumDetailsFragment : BaseFragment() {
         albumNameTextView.text = album.album.name
         albumSingerTextView.text = viewModel.artist
         durationTextView.text = TimeHelper.formatToMMSS(
-                album.tracks
-                        .map { it.duration.toInt() }.sum()
+            album.tracks
+                .map { it.duration.toInt() }.sum()
         )
         publishedDateTextView.text = album.wiki.published ?: "Unknown"
         adapter.replaceItems(album.tracks)
@@ -77,17 +79,25 @@ class AlbumDetailsFragment : BaseFragment() {
     private fun openInfo() {
         val url = viewModel.albumData.value?.album?.url
         val bundle = bundleOf(
-                FragmentParameters.URL to url
+            FragmentParameters.URL to url
         )
         navigator.navigateTo(Screen.OPEN_WEB, bundle)
+    }
+
+    override fun openYouTube(track: Track) {
+        val url = "https://www.youtube.com/results?search_query=${track.artistName} - ${track.name}"
+        val params = bundleOf(
+            FragmentParameters.URL to url
+        )
+        navigator.navigateTo(Screen.OPEN_WEB, params)
     }
 
     private fun getExtras() {
         arguments?.apply {
             val showAlertIfNullAndReturnValue = { str: String? ->
                 str ?: showError(
-                        getString(R.string.error),
-                        getString(R.string.you_have_to_select_album)
+                    getString(R.string.error),
+                    getString(R.string.you_have_to_select_album)
                 )
                 str
             }

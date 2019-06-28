@@ -1,87 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/navigation_graph"
-    app:startDestination="@id/actionAlbums">
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation_graph"
+            app:startDestination="@id/actionAlbums">
 
     <fragment
-        android:id="@+id/albumDetailsFragment"
-        android:name="com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment"
-        android:label="Local details" />
+            android:id="@+id/albumDetailsFragment"
+            tools:layout="@layout/album_details_fragment"
+            android:name="com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment"
+            android:label="Local details"/>
     <fragment
-        android:id="@+id/actionAlbums"
-        android:name="com.gromyk.lastfmaf.presentation.albums.AlbumsFragment"
-        android:label="Local">
+            android:id="@+id/actionAlbums"
+            android:name="com.gromyk.lastfmaf.presentation.albums.AlbumsFragment"
+            tools:layout="@layout/albums_fragment"
+            android:label="Local">
         <action
-            android:id="@+id/action_albumsFragment_to_albumDetailsFragment"
-            app:destination="@id/albumDetailsFragment" />
+                android:id="@+id/action_albumsFragment_to_albumDetailsFragment"
+                app:destination="@id/albumDetailsFragment"/>
         <action
-            android:id="@+id/action_albumsFragment_to_searchFragment"
-            app:destination="@id/actionSearch" />
+                android:id="@+id/action_albumsFragment_to_searchFragment"
+                app:destination="@id/actionSearch"/>
         <argument
-            android:name="artistKey"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="artistKey"
+                app:argType="string"
+                app:nullable="true"/>
         <argument
-            android:name="albumKey"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="albumKey"
+                app:argType="string"
+                app:nullable="true"/>
         <argument
-            android:name="loadLocalData"
-            android:defaultValue="true"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="loadLocalData"
+                android:defaultValue="true"
+                app:argType="string"
+                app:nullable="true"/>
     </fragment>
     <fragment
-        android:id="@+id/albumDetailsFragment2"
-        android:name="com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment"
-        android:label="Details for album" />
+            android:id="@+id/albumDetailsFragment2"
+            tools:layout="@layout/album_details_fragment"
+            android:name="com.gromyk.lastfmaf.presentation.albumdetails.AlbumDetailsFragment"
+            android:label="Details for album"/>
     <fragment
-        android:id="@+id/actionSearch"
-        android:name="com.gromyk.lastfmaf.presentation.search.SearchFragment"
-        android:label="Search artist">
+            android:id="@+id/actionSearch"
+            tools:layout="@layout/search_fragment"
+            android:name="com.gromyk.lastfmaf.presentation.search.SearchFragment"
+            android:label="Search artist">
         <argument
-            android:name="artistKey"
-            android:defaultValue="null"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="artistKey"
+                android:defaultValue="null"
+                app:argType="string"
+                app:nullable="true"/>
         <argument
-            android:name="albumKey"
-            android:defaultValue="null"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="albumKey"
+                android:defaultValue="null"
+                app:argType="string"
+                app:nullable="true"/>
         <argument
-            android:name="loadLocalData"
-            android:defaultValue="true"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="loadLocalData"
+                android:defaultValue="true"
+                app:argType="string"
+                app:nullable="true"/>
         <action
-            android:id="@+id/action_searchFragment_to_albumsFragment2"
-            app:destination="@id/albumsFragment2"
-            app:launchSingleTop="true"
-            app:popUpTo="@+id/actionSearch" />
+                android:id="@+id/action_searchFragment_to_albumsFragment2"
+                app:destination="@id/albumsFragment2"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/actionSearch"/>
     </fragment>
     <fragment
-        android:id="@+id/albumsFragment2"
-        android:name="com.gromyk.lastfmaf.presentation.albums.AlbumsFragment"
-        android:label="Top albums">
+            tools:layout="@layout/albums_fragment"
+            android:id="@+id/albumsFragment2"
+            android:name="com.gromyk.lastfmaf.presentation.albums.AlbumsFragment"
+            android:label="Top albums">
         <argument
-            android:name="artistKey"
-            android:defaultValue="null"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="artistKey"
+                android:defaultValue="null"
+                app:argType="string"
+                app:nullable="true"/>
         <argument
-            android:name="albumKey"
-            android:defaultValue="null"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="albumKey"
+                android:defaultValue="null"
+                app:argType="string"
+                app:nullable="true"/>
         <argument
-            android:name="loadLocalData"
-            android:defaultValue="true"
-            app:argType="string"
-            app:nullable="true" />
+                android:name="loadLocalData"
+                android:defaultValue="true"
+                app:argType="string"
+                app:nullable="true"/>
         <action
-            android:id="@+id/action_albumsFragment2_to_albumDetailsFragment2"
-            app:destination="@id/albumDetailsFragment2" />
+                android:id="@+id/action_albumsFragment2_to_albumDetailsFragment2"
+                app:destination="@id/albumDetailsFragment2"/>
     </fragment>
 </navigation>
