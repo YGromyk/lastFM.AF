@@ -38,9 +38,6 @@ dependencies {
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to  listOf("*.jar"))))
 
-    // ui
-    implementation( "androidx.appcompat:appcompat:1.0.2")
-
     // logger
     implementation( "com.jakewharton.timber:timber:$timberVersion")
 

@@ -22,7 +22,7 @@ dependencies {
     val timberVersion = "4.7.1"
     val roomVersion = "2.1.0"
     val gsonVersion = "2.8.5"
-    val lifeCycleVersion = "1.1.1"
+    val lifeCycleVersion = "2.0.0"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
@@ -38,7 +38,7 @@ dependencies {
     implementation( "com.google.code.gson:gson:$gsonVersion")
 
     // liveData
-    implementation("android.arch.lifecycle:extensions:$lifeCycleVersion")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion")
 
 
     // tests
