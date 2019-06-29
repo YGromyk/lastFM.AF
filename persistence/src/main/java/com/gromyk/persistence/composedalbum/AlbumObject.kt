@@ -3,16 +3,16 @@ package com.gromyk.persistence.composedalbum
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.gromyk.persistence.album.Album
-import com.gromyk.persistence.track.Track
-import com.gromyk.persistence.wiki.Wiki
 import com.gromyk.persistence.image.Image
 import com.gromyk.persistence.tag.Tag
+import com.gromyk.persistence.track.Track
+import com.gromyk.persistence.wiki.Wiki
 
 class AlbumObject(
     @Embedded
-    var album: Album,
+    var album: Album?,
     @Embedded
-    var wiki: Wiki,
+    var wiki: Wiki?,
     @Relation(
         entity = Image::class,
         entityColumn = Image.ALBUM,
@@ -33,7 +33,12 @@ class AlbumObject(
     )
     var tags: List<Tag>
 ) {
+    @Suppress("unused")
     constructor() : this(
         Album(),
-        Wiki(), emptyList(), emptyList(), emptyList())
+        Wiki(),
+        emptyList(),
+        emptyList(),
+        emptyList()
+    )
 }

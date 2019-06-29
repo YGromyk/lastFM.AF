@@ -55,13 +55,13 @@ class AlbumDetailsFragment : BaseFragment(),
 
     private fun onAlbumLoaded(album: AlbumObject) {
         albumImageView.loadPhoto(album.images.imageLinkPersistence())
-        albumNameTextView.text = album.album.name
+        albumNameTextView.text = album.album?.name
         albumSingerTextView.text = viewModel.artist
         durationTextView.text = TimeHelper.formatToMMSS(
             album.tracks
                 .map { it.duration.toInt() }.sum()
         )
-        publishedDateTextView.text = album.wiki.published ?: "Unknown"
+        publishedDateTextView.text = album.wiki?.published ?: "Unknown"
         adapter.replaceItems(album.tracks)
         placeholder?.showPlaceholder(album.tracks.count(), PlaceholderType.NO_SONGS)
     }

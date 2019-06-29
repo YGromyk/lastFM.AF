@@ -83,9 +83,11 @@ class AlbumsViewModel : BaseViewModel() {
 
     private fun getLocalAlbums() = repository.getLocalAlbums()
         .toMutableList()
-        .map {
-            it.toAlbumUI(
-                repository.getArtistById(it.album.artistId)?.name ?: ""
+        .map { albumObject ->
+            albumObject.toAlbumUI(
+                albumObject.album?.artistId?.let {
+                    repository.getArtistById(it)?.name
+                } ?: ""
             )
         }
 
