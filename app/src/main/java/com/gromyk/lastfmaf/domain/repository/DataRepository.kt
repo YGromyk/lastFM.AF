@@ -41,9 +41,9 @@ class DataRepository : KoinComponent {
         database.getAllArtists().firstOrNull { it.id == artistId }
 
     fun saveAlbum(album: AlbumObject) {
-        val albumId = localAlbums.mapNotNull { it.album.albumId }.max() ?: 0L
+        val albumId = localAlbums.mapNotNull { it.album?.albumId }.max() ?: 0L
         val isSaved = database.saveAlbum(album.apply {
-            this.album.albumId = albumId + 1
+            this.album?.albumId = albumId + 1
         })
         if (isSaved)
             localAlbums.add(album)
@@ -59,7 +59,7 @@ class DataRepository : KoinComponent {
         val artist = database.getArtistBy(artistName)
         return localAlbums
             .find {
-                it.album.artistId == artist.id && it.album.name == albumName
+                it.album?.artistId == artist.id && it.album?.name == albumName
             }
     }
 

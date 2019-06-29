@@ -40,13 +40,13 @@ abstract class AppDatabase : RoomDatabase() {
     protected abstract val tagsDAO: TagsDAO
 
     fun saveAlbum(album: AlbumObject): Boolean {
-        val recordNumber = albumDAO.insert(album.album).firstOrNull() ?: -1L
+        val recordNumber = album.album?.let { albumDAO.insert(it).firstOrNull() } ?: -1L
         if (recordNumber == -1L) {
             Timber.e(Throwable("Album already saved"))
             return false
         }
-        val albumId = album.album.albumId ?: recordNumber
-        album.wiki.let {
+        val albumId = album.album?.albumId ?: recordNumber
+        album.wiki?.let {
             wikiDAO.insert(it.apply {
                 it.albumId = albumId
             })
@@ -80,7 +80,7 @@ abstract class AppDatabase : RoomDatabase() {
     fun getAllAlbums(): List<AlbumObject> {
         val list = albumObjectDAO.getAlbums()
         list.forEach { albumId ->
-            albumId.wiki = albumId.album.albumId?.let { it1 ->
+            albumId.wiki = albumId.album?.albumId?.let { it1 ->
                 wikiDAO.getWikiFor(it1)
             } ?: Wiki()
         }
@@ -88,7 +88,9 @@ abstract class AppDatabase : RoomDatabase() {
     }
 
     fun removeAlbums(albumObject: AlbumObject) {
-        albumDAO.remove(albumObject.album)
+        albumObject.album?.let {
+            albumDAO.remove(it)
+        }
         albumObject.images.forEach {
             imageDAO.remove(it)
         }
@@ -98,6 +100,8 @@ abstract class AppDatabase : RoomDatabase() {
         albumObject.tags.forEach {
             tagsDAO.remove(it)
         }
-        wikiDAO.remove(albumObject.wiki)
+        albumObject.wiki?.let {
+            wikiDAO.remove(it)
+        }
     }
 }

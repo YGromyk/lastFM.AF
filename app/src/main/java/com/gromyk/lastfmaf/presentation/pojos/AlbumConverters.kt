@@ -21,7 +21,7 @@ fun Album.toDBAlbum() = com.gromyk.persistence.album.Album(
 
 
 fun AlbumObject.toAlbumUI(artistName: String) = AlbumUI(
-    album.name,
+    album?.name,
     artistName,
     images.imageLinkPersistence(),
     true
