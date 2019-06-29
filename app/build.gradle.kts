@@ -83,9 +83,9 @@ dependencies {
     implementation("com.jakewharton.timber:timber:$timberVersion")
 
     // room
-    implementation("android.arch.persistence.room:runtime:$roomVersion")
-    kapt("android.arch.persistence.room:compiler:$roomVersion")
-    androidTestImplementation("android.arch.persistence.room:testing:$roomVersion")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    androidTestImplementation("androidx.room:room-testing:$roomVersion")
 
     // rest
     implementation("com.squareup.retrofit2:converter-gson:$retrofitConverterVersion")

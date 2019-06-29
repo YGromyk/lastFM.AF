@@ -20,7 +20,7 @@ android {
 
 dependencies {
     val timberVersion = "4.7.1"
-    val roomVersion = "2.0.1"
+    val roomVersion = "2.1.0"
     val gsonVersion = "2.8.5"
     val lifeCycleVersion = "1.1.1"
 
@@ -30,9 +30,9 @@ dependencies {
     implementation("com.jakewharton.timber:timber:$timberVersion")
 
     // room
-    implementation("android.arch.persistence.room:runtime:$roomVersion")
-    kapt("android.arch.persistence.room:compiler:$roomVersion")
-    androidTestImplementation("android.arch.persistence.room:testing:$roomVersion")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    androidTestImplementation("androidx.room:room-testing:$roomVersion")
 
     // gson
     implementation( "com.google.code.gson:gson:$gsonVersion")
