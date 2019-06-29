@@ -34,8 +34,8 @@ internal class SearchFragment : BaseFragment(), ArtistAdapter.OnArtistSelected {
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.search_menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

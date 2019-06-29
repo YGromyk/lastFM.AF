@@ -41,14 +41,14 @@ android {
 dependencies {
     val kotlinVersion = "1.3.40"
     val kotlinCoroutineVersion = "1.3.0-M1"
-    val lifeCycleVersion = "1.1.1"
+    val lifeCycleVersion = "2.0.0"
     val koinVersion = "2.0.1"
     val timberVersion = "4.7.1"
     val picassoVersion = "2.71828"
     val expandableLayoutVersion = "2.9.2"
     val roomVersion = "2.1.0"
     val retrofitConverterVersion = "2.6.0"
-    val navigationVersion = "1.0.0"
+    val navigationVersion = "2.1.0-alpha05"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     api(project(":api"))
@@ -68,8 +68,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:$picassoVersion")
 
     // viewModels
-    implementation("android.arch.lifecycle:extensions:$lifeCycleVersion")
-    implementation("android.arch.lifecycle:viewmodel:$lifeCycleVersion")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion")
 
     //Kotlin Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutineVersion")
@@ -92,8 +91,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:3.14.2")
 
     // navigation
-    implementation("android.arch.navigation:navigation-fragment-ktx:$navigationVersion")
-    implementation("android.arch.navigation:navigation-ui-ktx:$navigationVersion")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
 
     // tests
     testImplementation("junit:junit:4.12")
