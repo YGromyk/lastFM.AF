@@ -8,6 +8,7 @@ import com.gromyk.api.dtos.artist.ArtistInfo
 import com.gromyk.api.dtos.topalbums.TopAlbum
 import com.gromyk.api.dtos.topalbums.TopAlbums
 import com.gromyk.lastfmaf.domain.repository.DataRepository
+import com.gromyk.lastfmaf.helpers.clearAndInsert
 import com.gromyk.lastfmaf.presentation.base.BaseViewModel
 import com.gromyk.lastfmaf.presentation.networkstate.onError
 import com.gromyk.lastfmaf.presentation.pojos.*
@@ -65,7 +66,7 @@ class AlbumsViewModel : BaseViewModel() {
         if (!showErrorIsNoNetwork()) return@launch
         repository.getTopAlbumsFor(searchedArtist!!, object : OnResponse<TopAlbums> {
             override fun onSuccess(responseBody: TopAlbums) {
-                savedAlbums.addAll(responseBody.albums)
+                savedAlbums.clearAndInsert(responseBody.albums)
                 val loadedAlbums = savedAlbums.map { it.toAlbumUI() }
                 decorateLoadedAlbums(loadedAlbums)
                 this@AlbumsViewModel.topAlbums.postValue(loadedAlbums)
