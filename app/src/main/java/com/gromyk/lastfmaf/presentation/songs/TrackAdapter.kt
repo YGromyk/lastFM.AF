@@ -32,8 +32,7 @@ class TrackAdapter(listener: OnYouTubeClicked) : BaseRecyclerAdapter<Track>() {
             }
         }
 
-        override fun onClick(v: View?) {
-        }
+        override fun onClick(v: View?) = Unit
 
         private fun onYouTubeClicked(item: Track) {
             onYouTubeClickListener.get()?.openYouTube(item)

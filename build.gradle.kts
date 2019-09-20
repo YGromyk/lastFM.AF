@@ -20,6 +20,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven ("http://s2.appsfactory.de/APPSfactory/Maven" )
     }
 }
 

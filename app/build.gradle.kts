@@ -49,6 +49,7 @@ dependencies {
     val roomVersion = "2.1.0"
     val retrofitConverterVersion = "2.6.0"
     val navigationVersion = "2.1.0-alpha05"
+    val mvpLibVersion = "3.5.1"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     api(project(":api"))
@@ -86,13 +87,13 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     androidTestImplementation("androidx.room:room-testing:$roomVersion")
 
-    // rest
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitConverterVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:3.14.2")
-
     // navigation
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
+
+    // mvp library
+    implementation("de.appsfactory:mvp:$mvpLibVersion")
+
 
     // tests
     testImplementation("junit:junit:4.12")
